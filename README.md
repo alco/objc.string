@@ -13,17 +13,17 @@ There are quite a few so called toolkits for Objective-C released by various com
 
 * They don't have a clear purpose other than "this is a collection of functionality we find useful; hopefully you will benefit from it too". You will agree that we all dislike unnecessary dependencies and dependencies that we don't fully understand or use to their full potential.
 
-In contrast with those general purpose toolkits, the goal of **objc.string** is to provide a comprehensive set of string manipulation routines in a small, self-contained library with zero dependencies (there are some, but for your own good; they are described in the _Configuration_ section). It does one thing and does it well. What it does not do:
+In contrast with those general purpose toolkits, the goal of **objc.string** is to provide a comprehensive set of string manipulation routines in a small, self-contained library with zero dependencies (there are some, but for your own good; they are described in the _Configuration_ section below). It does one thing and does it well. What it does not do:
 
 * networking
 * hashing
 * HTML-related stuff
 * compression/decompression
 * text rendering
-* raytracing
+* ray tracing
 * anything else unrelated to the core string operations
 
-I drew inspiration from [Underscore.string][1], Python's [string methods][2] and my own experience with strings.
+While developing it, I drew inspiration from [Underscore.string][1], Python's [string methods][2] and my own experience with strings.
 
 This is an early development version. I'd love to hear your feedback and suggestions. If you'd like to have a certain function added, please open a new issue or send a pull request ;)
 
@@ -53,7 +53,7 @@ newStr = [newStr append:@"."];                    // => @"Apple, orange, donut."
 
 This code produces four intermediate strings that get thrown away. Of course, there is `NSMutableString`, but Apple decided it does not need that many methods at all, so we Objective-C developers are pretty much screwed when it comes to manipulating string in an efficient manner.
 
-**objc.string** does not provide a parallel set of functions that operate on instances of `NSMutableString`. Instead, it provides an ability to use the same functions to modify the input string in-place. This is achievement by using the `chain`/`unchain` methods:
+**objc.string** does not provide a parallel set of functions that operate on instances of `NSMutableString`. Instead, it provides an ability to use the same functions to modify the input string in-place. This is achieved by using the `chain`/`unchain` methods:
 
 ```objc
 NSString *testStr = @"\tapple orange plum \n";
@@ -67,7 +67,7 @@ NSString *newStr = [testStr chain];
 [newStr unchain];
 ```
 
-A new string is allocated when the `chain` method is called. All successive method calls change `newStr` without allocating new strings. Note that the code has been formatted on multiple lines for clarity. With **objc.string**, all of the following examples produce the same string in the end:
+A new string is allocated when the `chain` method is called. All successive method calls change `newStr` without allocating new strings. Note that the code has been formatted on multiple lines only for clarity. All of the following examples produce the same string in the end:
 
 ```objc
 NSString *testStr = @"\tapple orange plum \n";
@@ -79,10 +79,9 @@ NSString *aStr =
 
 // One new string is allocated. This is more efficient.
 NSString *anotherStr = [testStr chain];
-[[testStr trim] replace:@"plum" with:@"donut"];
+[[[testStr trim] replace:@"plum" with:@"donut"] capitalize];
 // Return values can be ignored while chaining. Each method simply returns a
 // pointer to the same input string.
-[testStr capitalize];
 [testStr replace:@" " with:@", "];
 [testStr append:@"."];
 [testStr unchain];
@@ -100,7 +99,7 @@ NSMutableString *mstr = ...;
 }];
 ```
 
-Another nice feature of **objc.string** is that it provides support for multiple workflows. The basic functionality is implemented as a set of functions in the _str_funs.m_ file. Categories are also provided for `NSString` and `NSMutableString`. If you like the category approach, simply add all of the files to your project and include the _NSString+ObjCStringAdditions.h_ file where you want to use the methods. If you're not a fan of categories, simply add _str_funs.h_ and _str_funs.m_ to your project and use plain functions.
+Another nice feature of **objc.string** is that it provides support for multiple workflows. The basic functionality is implemented as a set of functions in the _str_funs.m_ file. Categories are also provided for `NSString` and `NSMutableString`. If you like the category approach, add the _objc.string_ directory to your project and include the _NSString+ObjCStringAdditions.h_ file where you want to use it. If you're not a fan of categories, add only _str_funs.h_ and _str_funs.m_ to your project and use plain functions.
 
 ## Documentation ##
 
