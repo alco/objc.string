@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Objc.string : Self-contained library for efficient string manipulation in Objective-C. " />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Objc.string</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/alco/objc.string">Fork Me on GitHub</a>
+
+          <h1 id="project_title">Objc.string</h1>
+          <h2 id="project_tagline">Self-contained library for efficient string manipulation in Objective-C. </h2>
+
+          <section id="downloads">
+            <a class="zip_download_link" href="https://github.com/alco/objc.string/zipball/master">Download this project as a .zip file</a>
+            <a class="tar_download_link" href="https://github.com/alco/objc.string/tarball/master">Download this project as a tar.gz file</a>
+          </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>objc.string</h1>
+
+<p>Self-contained library for efficient string manipulation in Objective-C.</p>
+
+<h2>Motivation</h2>
+
+<p>It is quite surprising, but no such library has been developed yet, at least in the open source land. Or I just haven't found one.</p>
+
+<p>There are quite a few so called toolkits for Objective-C released by various companies. It's certainly great that companies share their experience through the code they have accumulated over time. The code is usually well-written and commented, but the problem with those toolkits is that they are mostly useful for the people that created them. The are two main concerns involved:</p>
+
+<ul>
+<li><p>Those toolkits tend to be monolithic in the sense that it's not easy to use just one or two classes (out of dozens) because they often depend on the other classes in the same or other toolkits.</p></li>
+<li><p>They don't have a clear purpose other than "this is a collection of functionality we find useful; hopefully you will benefit from it too". You will agree that we all dislike unnecessary dependencies and dependencies that we don't fully understand or use to their full potential.</p></li>
+</ul><p>In contrast with those general purpose toolkits, the goal of <strong>objc.string</strong> is to provide a comprehensive set of string manipulation routines in a small, self-contained library with zero dependencies (there are some, but for your own good; they are described in the <em>Configuration</em> section below). It does one thing and does it well. What it does not do:</p>
+
+<ul>
+<li>networking</li>
+<li>hashing</li>
+<li>HTML-related stuff</li>
+<li>compression/decompression</li>
+<li>text rendering</li>
+<li>ray tracing</li>
+<li>anything else unrelated to the core string operations</li>
+</ul><p>While developing it, I drew inspiration from <a href="https://github.com/epeli/underscore.string">Underscore.string</a>, Python's <a href="http://docs.python.org/library/stdtypes.html#string-methods">string methods</a> and my own experience with strings.</p>
+
+<p>This is an early development version. I'd love to hear your feedback and suggestions. If you'd like to have a certain function added, please open a new issue or send a pull request ;)</p>
+
+<h2>Core Concepts</h2>
+
+<p><strong>objc.string</strong> has two basic principles at its core:</p>
+
+<ul>
+<li><p>All functions adhere to functional style: they return a new object, leaving the original string untouched.</p></li>
+<li><p>Most of the functions can be chained to efficiently perform multiple string operations without redundant allocations.</p></li>
+</ul><p>Consider the following example:</p>
+
+<div class="highlight">
+<pre><span class="n">NSString</span> <span class="o">*</span><span class="n">testStr</span> <span class="o">=</span> <span class="s">@"</span><span class="se">\t</span><span class="s">apple orange plum </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">*</span><span class="n">newStr</span><span class="p">;</span>
+
+<span class="n">newStr</span> <span class="o">=</span> <span class="p">[</span><span class="n">testStr</span> <span class="n">trim</span><span class="p">];</span>                          <span class="c1">// =&gt; @"apple orange plum"</span>
+<span class="n">newStr</span> <span class="o">=</span> <span class="p">[</span><span class="n">newStr</span> <span class="nl">replace:</span><span class="s">@"plum"</span> <span class="nl">with:</span><span class="s">@"donut"</span><span class="p">];</span>  <span class="c1">// =&gt; @"apple orange donut"</span>
+<span class="n">newStr</span> <span class="o">=</span> <span class="p">[</span><span class="n">newStr</span> <span class="n">capitalize</span><span class="p">];</span>                     <span class="c1">// =&gt; @"Apple orange donut"</span>
+<span class="n">newStr</span> <span class="o">=</span> <span class="p">[</span><span class="n">newStr</span> <span class="nl">replace:</span><span class="s">@" "</span> <span class="nl">with:</span><span class="s">@", "</span><span class="p">];</span>        <span class="c1">// =&gt; @"Apple, orange, donut"</span>
+<span class="n">newStr</span> <span class="o">=</span> <span class="p">[</span><span class="n">newStr</span> <span class="nl">append:</span><span class="s">@"."</span><span class="p">];</span>                    <span class="c1">// =&gt; @"Apple, orange, donut."</span>
+</pre>
+</div>
+
+
+<p>This code produces four intermediate strings that get thrown away. Of course, there is <code>NSMutableString</code>, but Apple decided it does not need that many methods at all, so we Objective-C developers are pretty much screwed when it comes to manipulating string in an efficient manner.</p>
+
+<p><strong>objc.string</strong> does not provide a parallel set of functions that operate on instances of <code>NSMutableString</code>. Instead, it provides an ability to use the same functions to modify the input string in-place. This is achieved by using the <code>chain</code>/<code>unchain</code> methods:</p>
+
+<div class="highlight">
+<pre><span class="n">NSString</span> <span class="o">*</span><span class="n">testStr</span> <span class="o">=</span> <span class="s">@"</span><span class="se">\t</span><span class="s">apple orange plum </span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+
+<span class="n">NSString</span> <span class="o">*</span><span class="n">newStr</span> <span class="o">=</span> <span class="p">[</span><span class="n">testStr</span> <span class="n">chain</span><span class="p">];</span>
+<span class="p">[</span><span class="n">newStr</span> <span class="n">trim</span><span class="p">];</span>                           <span class="c1">// =&gt; @"apple orange plum"</span>
+<span class="p">[</span><span class="n">newStr</span> <span class="nl">replace:</span><span class="s">@"plum"</span> <span class="nl">with:</span><span class="s">@"donut"</span><span class="p">];</span>  <span class="c1">// =&gt; @"apple orange donut"</span>
+<span class="p">[</span><span class="n">newStr</span> <span class="n">capitalize</span><span class="p">];</span>                     <span class="c1">// =&gt; @"Apple orange donut"</span>
+<span class="p">[</span><span class="n">newStr</span> <span class="nl">replace:</span><span class="s">@" "</span> <span class="nl">with:</span><span class="s">@", "</span><span class="p">];</span>        <span class="c1">// =&gt; @"Apple, orange, donut"</span>
+<span class="p">[</span><span class="n">newStr</span> <span class="nl">append:</span><span class="s">@"."</span><span class="p">];</span>                    <span class="c1">// =&gt; @"Apple, orange, donut."</span>
+<span class="p">[</span><span class="n">newStr</span> <span class="n">unchain</span><span class="p">];</span>
+</pre>
+</div>
+
+
+<p>A new string is allocated when the <code>chain</code> method is called. All successive method calls change <code>newStr</code> without allocating new strings. Note that the code has been formatted on multiple lines only for clarity. All of the following examples produce the same string in the end:</p>
+
+<div class="highlight">
+<pre><span class="n">NSString</span> <span class="o">*</span><span class="n">testStr</span> <span class="o">=</span> <span class="s">@"</span><span class="se">\t</span><span class="s">apple orange plum </span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+
+<span class="c1">// This is an inefficient way of combining multiple string operations, resulting</span>
+<span class="c1">// in allocation of four intermediate strings (5 allocations total)</span>
+<span class="n">NSString</span> <span class="o">*</span><span class="n">aStr</span> <span class="o">=</span>
+    <span class="p">[[[[[</span><span class="n">testStr</span> <span class="n">trim</span><span class="p">]</span> <span class="nl">replace:</span><span class="s">@"plum"</span> <span class="nl">with:</span><span class="s">@"donut"</span><span class="p">]</span> <span class="n">capitalize</span><span class="p">]</span> <span class="nl">replace:</span><span class="s">@" "</span> <span class="nl">with:</span><span class="s">@", "</span><span class="p">]</span> <span class="nl">append:</span><span class="s">@"."</span><span class="p">];</span>
+
+<span class="c1">// One new string is allocated. This is more efficient.</span>
+<span class="n">NSString</span> <span class="o">*</span><span class="n">anotherStr</span> <span class="o">=</span> <span class="p">[</span><span class="n">testStr</span> <span class="n">chain</span><span class="p">];</span>
+<span class="p">[[[</span><span class="n">testStr</span> <span class="n">trim</span><span class="p">]</span> <span class="nl">replace:</span><span class="s">@"plum"</span> <span class="nl">with:</span><span class="s">@"donut"</span><span class="p">]</span> <span class="n">capitalize</span><span class="p">];</span>
+<span class="c1">// Return values can be ignored while chaining. Each method simply returns a</span>
+<span class="c1">// pointer to the same input string.</span>
+<span class="p">[</span><span class="n">testStr</span> <span class="nl">replace:</span><span class="s">@" "</span> <span class="nl">with:</span><span class="s">@", "</span><span class="p">];</span>
+<span class="p">[</span><span class="n">testStr</span> <span class="nl">append:</span><span class="s">@"."</span><span class="p">];</span>
+<span class="p">[</span><span class="n">testStr</span> <span class="n">unchain</span><span class="p">];</span>
+
+<span class="c1">// Same as the previous one, but automatically calls `unchain` behind the scenes.</span>
+<span class="c1">// This is the recommended way to combine multiple string operations.</span>
+<span class="n">NSString</span> <span class="o">*</span><span class="n">yetAnotherStr</span> <span class="o">=</span> <span class="p">[</span><span class="n">testStr</span> <span class="nl">chain:</span><span class="o">^</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">[[[[[</span><span class="n">str</span> <span class="n">trim</span><span class="p">]</span> <span class="nl">replace:</span><span class="s">@"plum"</span> <span class="nl">with:</span><span class="s">@"donut"</span><span class="p">]</span> <span class="n">capitalize</span><span class="p">]</span> <span class="nl">replace:</span><span class="s">@" "</span> <span class="nl">with:</span><span class="s">@", "</span><span class="p">]</span><span class="nl">append:</span><span class="s">@"."</span><span class="p">];</span>
+<span class="p">}];</span>
+
+<span class="c1">// If you already have an instance of NSMutableString, you can avoid allocations altogether.</span>
+<span class="n">NSMutableString</span> <span class="o">*</span><span class="n">mstr</span> <span class="o">=</span> <span class="p">...;</span>
+<span class="p">[</span><span class="n">mstr</span> <span class="nl">chain_fast:</span><span class="o">^</span><span class="p">(</span><span class="n">NSMutableString</span> <span class="o">*</span><span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+<span class="p">}];</span>
+</pre>
+</div>
+
+
+<p>Another nice feature of <strong>objc.string</strong> is that it provides support for multiple workflows. The basic functionality is implemented as a set of functions in the <em>str_funs.m</em> file. Categories are also provided for <code>NSString</code> and <code>NSMutableString</code>. If you like the category approach, add the <em>objc.string</em> directory to your project and include the <em>NSString+ObjCStringAdditions.h</em> file where you want to use it. If you're not a fan of categories, add only <em>str_funs.h</em> and <em>str_funs.m</em> to your project and use plain functions.</p>
+
+<h2>Documentation</h2>
+
+<p>Documentation is not yet available. See the list of available functions in the <em>str_funs.h</em> file.</p>
+
+<h2>License</h2>
+
+<p>Feel free to hack on the code. I'll add a license once the library is mature and stable enough.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Objc.string maintained by <a href="https://github.com/alco">alco</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
