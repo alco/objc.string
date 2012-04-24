@@ -2,14 +2,14 @@
 
 
 /*
- * Append s2 after s1. Synonym for [s1 stringByAppendingString:s2].
+ * Append `s2` after `s1`. Synonym for [s1 stringByAppendingString:s2].
  * (chainable)
  *
  *     str_append(@"foo", @"bar")  =>  @"foobar"
  */
 NSString *str_append(NSString *s1, NSString *s2);
 
-/* Capitalize the first character is str (if it's a letter).
+/* Capitalize the first character in `str` (only if it's a letter).
  * (chainable)
  *
  *     str_capitalize(@"one two")  =>  @"One two"
@@ -24,8 +24,9 @@ NSString *str_capitalize(NSString *str);
  */
 NSString *str_compress(NSString *str);
 
-/* Replace ocurrences of pattern with repl. pattern can be a string or a regex.
- * If pattern is a regex, the repl is treated as a template string (as per the NSRegularExpression docs).
+/* Replace ocurrences of `pattern` with `repl`. `pattern` can be a string or a
+ * regex. If `pattern` is a regex, then `repl` is treated as a template string
+ * (as per the NSRegularExpression docs).
  * (chainable)
  *
  *     str_replace(@"Hello, ma", @"ma", @"pa")
@@ -34,19 +35,19 @@ NSString *str_compress(NSString *str);
  *     str_replace(@"foo.bar one.two", $regex(@"(\\w+)\\.(\\w+)"), @"$2\\.$1")
  *     => @"bar.foo two.one"
  */
-NSString *str_replace(NSString *str, NSString *substr, NSString *repl);
+NSString *str_replace(NSString *str, NSString *pattern, NSString *repl);
 
-/* Repeat the string count times, inserting sep between repetitions. If count
- * == 0, returns an empty string.
+/* Repeat the string `count` times, inserting `sep` in-between. If `count` == 0,
+ * returns an empty string.
  * (chainable)
  *
  *     str_repeat(@"hello", 0, @"")  =>  @""
  *     str_repeat(@"foo", 3, @",")   =>  @"foo,foo,foo"
  */
-NSString *str_repeat(NSString *s, NSUInteger count, NSString *sep);
+NSString *str_repeat(NSString *str, NSUInteger count, NSString *sep);
 
-/* Cut the string into pieces, count characters each. If count == 0, returns an
- * array with the original string.
+/* Cut the string into pieces, `count` characters each. If `count` == 0, returns an
+ * array containing the original string.
  *
  *     str_chop(@"hello", 1)  =>  array(@"h", @"e", @"l", @"l", @"o")
  *     str_chop(@"hello", 3)  =>  array(@"hel", @"lo")
