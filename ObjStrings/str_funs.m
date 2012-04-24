@@ -9,6 +9,10 @@
 static int objective_string_chain_flag;
 
 
+void str_ltrim_d(NSMutableString *s);
+void str_rtrim_d(NSMutableString *s);
+
+
 NSString *str_append(NSString *s1, NSString *s2)
 {
     if (IS_CHAINING(s1)) {
@@ -49,6 +53,45 @@ NSString *str_compress(NSString *s)
     return str;
 }
 
+NSString *str_expand_tabs(NSString *s, NSUInteger tabsize)
+{
+    NSMutableString *str;
+    if (IS_CHAINING(s)) {
+        NSLog(@">>> Chaining expand_tabs <<<");
+        str = (NSMutableString *)s;
+    } else {
+        str = [NSMutableString stringWithString:s];
+    }
+    NSString *tab_str = str_repeat(@" ", tabsize, @"");
+    [str replaceOccurrencesOfString:@"\t" withString:tab_str options:0 range:WHOLE_RANGE(str)];
+    return str;
+}
+
+NSString *str_repeat(NSString *s, NSUInteger count, NSString *sep)
+{
+    NSMutableString *str;
+    if (IS_CHAINING(s)) {
+        NSLog(@">>> Chaining repeat <<<");
+        str = (NSMutableString *)s;
+    } else {
+        if (count == 0)
+            return @"";
+        str = [NSMutableString stringWithCapacity:([s length] + [sep length]) * count];
+    }
+    
+    if (count == 0) {
+        [str setString:@""];
+        return str;
+    }
+    
+    for (NSUInteger i = 0; i < count - 1; ++i) {
+        [str appendString:s];
+        [str appendString:sep];
+    }
+    [str appendString:s];
+    return str;
+}
+
 NSString *str_replace(NSString *s, NSString *substr, NSString *repl)
 {
     NSMutableString *str;
@@ -69,32 +112,56 @@ NSString *str_replace(NSString *s, NSString *substr, NSString *repl)
     return str;
 }
 
-NSString *str_repeat(NSString *s, NSUInteger count, NSString *sep)
+NSString *str_ltrim(NSString *s)
 {
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^\\s+"
+                                                                           options:0
+                                                                             error:NULL];
     NSMutableString *str;
     if (IS_CHAINING(s)) {
-        NSLog(@">>> Chaining repeat <<<");
+        NSLog(@">>> Chaining ltrim <<<)");
         str = (NSMutableString *)s;
     } else {
-        if (count == 0)
-            return @"";
-        str = [NSMutableString stringWithCapacity:([s length] + [sep length]) * count];
+        str = [NSMutableString stringWithString:s];
     }
-    
-    if (count == 0) {
-        [str setString:@""];
-        return str;
-    }
-
-    for (NSUInteger i = 0; i < count - 1; ++i) {
-        [str appendString:s];
-        [str appendString:sep];
-    }
-    [str appendString:s];
+    [regex replaceMatchesInString:str options:0 range:WHOLE_RANGE(str) withTemplate:@""];
     return str;
 }
 
+NSString *str_rtrim(NSString *s)
+{
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"\\s+$"
+                                                                           options:0
+                                                                             error:NULL];
+    NSMutableString *str;
+    if (IS_CHAINING(s)) {
+        NSLog(@">>> Chaining rtrim <<<)");
+        str = (NSMutableString *)s;
+    } else {
+        str = [NSMutableString stringWithString:s];
+    }
+    [regex replaceMatchesInString:str options:0 range:WHOLE_RANGE(str) withTemplate:@""];
+    return str;
+}
+
+NSString *str_trim(NSString *s)
+{
+    if (IS_CHAINING(s)) {
+        NSLog(@">>> Chaining trim <<<");
+        NSMutableString *str = (NSMutableString *)s;
+        str_ltrim_d(str);
+        str_rtrim_d(str);
+        return str;
+    }
+    return [s stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
 #pragma mark -
+
+NSString *str_join(NSString *s, NSArray *components)
+{
+    return [components componentsJoinedByString:s];
+}
 
 NSArray *str_chop(NSString *s, NSUInteger count)
 {
@@ -113,22 +180,58 @@ NSArray *str_chop(NSString *s, NSUInteger count)
     return array;
 }
 
-
-#pragma mark
-
-
-#pragma mark
-
-NSString *str_trim(NSString *s)
+NSArray *str_split_space(NSString *s)
 {
-    if (IS_CHAINING(s)) {
-        NSLog(@">>> Chaining trim <<<");
-        NSMutableString *str = (NSMutableString *)s;
-        str_ltrim_d(str);
-        str_rtrim_d(str);
-        return str;
+    return [s componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
+NSArray *str_split_lines(NSString *s)
+{
+    return [s componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+}
+
+NSArray *str_split(NSString *s, NSString *sep, NSUInteger count)
+{
+    if (count == 0)
+        return [NSArray arrayWithObject:s];
+    
+    NSArray *components = [s componentsSeparatedByString:sep];
+    if (count >= components.count - 1)
+        return components;
+
+    NSMutableArray *rest_components = [NSMutableArray arrayWithArray:components];
+    [rest_components removeObjectsInRange:NSMakeRange(0, count)];
+    NSString *rest = str_join(sep, rest_components);
+
+    NSMutableArray *result = [NSMutableArray arrayWithCapacity:count + 1];
+    NSUInteger i = 0;
+    for (NSString *str in components) {
+        [result addObject:str];
+        if (++i == count)
+            break;
     }
-    return [s stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    [result addObject:rest];
+    return result;
+}
+
+#pragma mark
+
+NSUInteger str_count(NSString *s, NSString *substr)
+{
+    NSUInteger count = 0;
+    NSRange strRange = WHOLE_RANGE(s);
+    int len = strRange.length;
+    do {
+        NSRange range = [s rangeOfString:substr options:0 range:strRange];
+        if (range.location == NSNotFound)
+            break;
+        ++count;
+        int new_loc = range.location + range.length;
+        strRange.location = new_loc;
+        strRange.length = len - new_loc;
+    } while (1);
+
+    return count;
 }
 
 #pragma mark
@@ -141,10 +244,10 @@ NSString *str_chain(NSString *s)
     return str;
 }
 
-NSString *str_chain_block(NSString *s, void (^block)(NSMutableString *s))
+NSString *str_chain_block(NSString *s, void (^block)(NSString *s))
 {
     NSString *str = str_chain(s);
-    block((NSMutableString *)str);
+    block(str);
     return str_unchain(str);
 }
 
