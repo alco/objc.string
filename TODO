@@ -1,0 +1,8 @@
+* benchmark all functions
+* deal with different regex libs (NSRegularExpression, RegexKitLite, etc.)
+
+* provide more efficient implementations for the following functions:
+  - capitalize
+  - chop
+  - split
+  - count
