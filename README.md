@@ -39,7 +39,7 @@ Here's what the library does do:
 * provides a comprehensive and consistent API
 * the same API is used to deal with plain strings as well as regular expressions
 * embraces functional approach (treats both `NSString` and `NSMutableString` as immutable)
-* while still providing a way to modify strings "in place"
+* (while still providing a way to modify strings "in place")
 * contains a complete set of unit tests and benchmarks
 
 
@@ -121,7 +121,7 @@ Documentation is not yet available. See the list of available functions in the _
 
 ## Running Tests ##
 
-We use [GHUnit][3] for testing purposes, it is included as a git submodule. To prepare the test project, run `make test` in the project's root directory. This will fetch the submodule and build it. Once it's done, open _ObjCStringTests.xcodeproj_ in the _tests_ directory and run it.
+[GHUnit][3] is used for testing purposes, it is included as a git submodule. To prepare the test project, run `make test` in the project's root directory. This will fetch the submodule and build it. Once it's done, open _ObjCStringTests.xcodeproj_ in the _tests_ directory and run it.
 
   [3]: https://github.com/gabriel/gh-unit
 
