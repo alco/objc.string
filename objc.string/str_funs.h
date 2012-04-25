@@ -1,5 +1,19 @@
 #import <Foundation/Foundation.h>
 
+
+#define $regex(pattern) ((NSString *)[NSRegularExpression regularExpressionWithPattern:pattern \
+                                                                               options:0       \
+                                                                                 error:NULL])
+
+/*
+ * *** General notes ***
+ *
+ * 1. Whitespace.
+ *
+ * Whitespace is defined by NSRegularExpression as [ \t\n\f\r\p{Z}] where \p{Z}
+ * is defined as "any kind of whitespace or invisible separator".
+ */
+
 /* ***
  * The functions below are all chainable.
  * ***

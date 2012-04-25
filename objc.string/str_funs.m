@@ -3,11 +3,7 @@
 
 
 #define WHOLE_RANGE(str) NSMakeRange(0, [(str) length])
-#define IS_WHITESPACE(c) (c == '\t' || c == '\v' || c == '\n' || c == '\r' || c == ' ')
-
-#define $regex(pattern)  ((NSString *)[NSRegularExpression regularExpressionWithPattern:pattern \
-                                                                                options:0       \
-                                                                                  error:NULL])
+#define IS_WHITESPACE(c) (c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r')
 
 #define IS_CHAINING(str) objc_getAssociatedObject(str, &objc_string_chain_flag)
 static int objc_string_chain_flag;
