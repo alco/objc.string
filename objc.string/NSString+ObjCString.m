@@ -13,11 +13,17 @@
 - (NSString *)compress {
     return str_compress(self);
 }
+- (NSString *)delete:(NSRange)range {
+    return str_delete(self, range);
+}
 - (NSString *)expandTabs {
     return str_expand_tabs(self, 4);
 }
 - (NSString *)expandTabs:(NSUInteger)tabsize {
     return str_expand_tabs(self, tabsize);
+}
+- (NSString *)insert:(NSString *)str at:(NSUInteger)position {
+    return str_insert(self, str, position);
 }
 - (NSString *)repeat:(NSUInteger)count {
     return str_repeat(self, count, @"");
@@ -27,6 +33,9 @@
 }
 - (NSString *)replace:(NSString *)substr with:(NSString *)newstr {
     return str_replace(self, substr, newstr);
+}
+- (NSString *)splice:(NSRange)range with:(NSString *)str {
+    return str_splice(self, range, str);
 }
 - (NSString *)ltrim {
     return str_ltrim(self);

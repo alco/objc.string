@@ -37,11 +37,30 @@
     GHAssertEqualStrings(@" foo bar ", [@"\t\f\rfoo     bar\n  \t " compress], @"");
 }
 
+- (void)testDelete
+{
+    GHAssertEqualStrings(@"foo", [@"foobar" delete:NSMakeRange(3, 3)], @"");
+    GHAssertEqualStrings(@"bar", [@"foobar" delete:NSMakeRange(0, 3)], @"");
+    GHAssertEqualStrings(@"foobar", [@"foobar" delete:NSMakeRange(3, 0)], @"");
+    GHAssertThrows([@"foo" delete:NSMakeRange(-1, 0)], @"");
+    GHAssertThrows([@"foo" delete:NSMakeRange(4, 0)], @"");
+}
+
 - (void)testExpandTabs
 {
     GHAssertEqualStrings(@"    foo", [@"\tfoo" expandTabs], @"");
     GHAssertEqualStrings(@"  foo   bar", [@"\tfoo \tbar" expandTabs:2], @"");
     GHAssertEqualStrings(@"foo bar", [@"\tfoo \tbar" expandTabs:0], @"");
+}
+
+- (void)testInsert
+{
+    GHAssertEqualStrings(@"foobar", [@"foo" insert:@"bar" at:3], @"");
+    GHAssertEqualStrings(@"barfoo", [@"foo" insert:@"bar" at:0], @"");
+    GHAssertEqualStrings(@"foobarbaz", [@"foobaz" insert:@"bar" at:3], @"");
+    GHAssertEqualStrings(@"foo", [@"foo" insert:@"" at:0], @"");
+    GHAssertThrows([@"foo" insert:@"" at:-1], @"");
+    GHAssertThrows([@"foo" insert:@"" at:4], @"");
 }
 
 - (void)testRepeat
@@ -65,6 +84,17 @@
 {
     GHAssertEqualStrings(@"foo foo  bar", [@"foo 1foo 123 13bar" replace:$regex(@"\\d+") with:@""], @"");
     GHAssertEqualStrings(@"bar.foo two.one", [@"foo.bar one.two" replace:$regex(@"(\\w+)\\.(\\w+)") with:@"$2.$1"], @"");
+}
+
+- (void)testSplice
+{
+    GHAssertEqualStrings(@"foo", [@"foo" splice:NSMakeRange(0, 0) with:@""], @"");
+    GHAssertEqualStrings(@"barfoo", [@"foo" splice:NSMakeRange(0, 0) with:@"bar"], @"");
+    GHAssertEqualStrings(@"bar", [@"foo" splice:NSMakeRange(0, 3) with:@"bar"], @"");
+    GHAssertEqualStrings(@"fobar", [@"foo" splice:NSMakeRange(2, 1) with:@"bar"], @"");
+    GHAssertEqualStrings(@"bar", [@"" splice:NSMakeRange(0, 0) with:@"bar"], @"");
+    GHAssertThrows([@"foo" splice:NSMakeRange(-1, 0) with:@""], @"");
+    GHAssertThrows([@"foo" splice:NSMakeRange(4, 0) with:@""], @"");
 }
 
 - (void)testTrim

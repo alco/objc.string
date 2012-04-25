@@ -15,11 +15,14 @@
 - (NSString *)append:(NSString *)str;
 - (NSString *)capitalize;
 - (NSString *)compress;
+- (NSString *)delete:(NSRange)range;  // splice:range with:@""
 - (NSString *)expandTabs;  // -expandTabs:4
 - (NSString *)expandTabs:(NSUInteger)tabsize;
+- (NSString *)insert:(NSString *)str at:(NSUInteger)position;  // splice:NSMakeRange(position, 0) with:str
 - (NSString *)repeat:(NSUInteger)count;
 - (NSString *)repeat:(NSUInteger)count sep:(NSString *)separator;
 - (NSString *)replace:(NSString *)substr with:(NSString *)repl;
+- (NSString *)splice:(NSRange)range with:(NSString *)str;
 - (NSString *)ltrim;
 - (NSString *)rtrim;
 - (NSString *)trim;

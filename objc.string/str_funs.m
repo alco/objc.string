@@ -40,10 +40,20 @@ NSString *str_compress(NSString *s)
     return str_replace(s, $regex(@"\\s+"), @" ");
 }
 
+NSString *str_delete(NSString *s, NSRange range)
+{
+    return str_splice(s, range, @"");
+}
+
 NSString *str_expand_tabs(NSString *s, NSUInteger tabsize)
 {
     NSString *tab_str = str_repeat(@" ", tabsize, @"");
     return str_replace(s, @"\t", tab_str);
+}
+
+NSString *str_insert(NSString *s, NSString *newstr, NSUInteger position)
+{
+    return str_splice(s, NSMakeRange(position, 0), newstr);
 }
 
 NSString *str_repeat(NSString *s, NSUInteger count, NSString *sep)
@@ -87,6 +97,18 @@ NSString *str_replace(NSString *s, NSString *substr, NSString *repl)
                                                  withTemplate:repl];
     else
         [str replaceOccurrencesOfString:substr withString:repl options:0 range:WHOLE_RANGE(str)];
+    return str;
+}
+
+NSString *str_splice(NSString *s, NSRange range, NSString *newstr)
+{
+    NSMutableString *str;
+    if (IS_CHAINING(s)) {
+        str = (NSMutableString *)s;
+    } else {
+        str = [NSMutableString stringWithString:s];
+    }
+    [str replaceCharactersInRange:range withString:newstr];
     return str;
 }
 

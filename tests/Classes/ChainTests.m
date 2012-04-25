@@ -41,10 +41,22 @@
     GHAssertEquals(_chainedStr, [[_chainedStr compress] unchain], @"");
 }
 
+- (void)testDelete
+{
+    GHAssertEquals(_chainedStr, [_chainedStr delete:NSMakeRange(0, 3)], @"");
+    GHAssertEquals(_chainedStr, [[_chainedStr delete:NSMakeRange(2, 1)] unchain], @"");
+}
+
 - (void)testExpandTabs
 {
     GHAssertEquals(_chainedStr, [_chainedStr expandTabs], @"");
     GHAssertEquals(_chainedStr, [[_chainedStr expandTabs] unchain], @"");
+}
+
+- (void)testInsert
+{
+    GHAssertEquals(_chainedStr, [_chainedStr insert:@"abc" at:0], @"");
+    GHAssertEquals(_chainedStr, [[_chainedStr insert:@"bca" at:3] unchain], @"");
 }
 
 - (void)testRepeat
@@ -57,6 +69,12 @@
 {
     GHAssertEquals(_chainedStr, [_chainedStr replace:@"foo" with:@"bar"], @"");
     GHAssertEquals(_chainedStr, [[_chainedStr replace:@"foo" with:@"bar"] unchain], @"");
+}
+
+- (void)testSplice
+{
+    GHAssertEquals(_chainedStr, [_chainedStr splice:NSMakeRange(0, 3) with:@"hello"], @"");
+    GHAssertEquals(_chainedStr, [[_chainedStr splice:NSMakeRange(0, 3) with:@"bye"] unchain], @"");
 }
 
 - (void)testLtrim

@@ -44,12 +44,30 @@ NSString *str_capitalize(NSString *str);
 NSString *str_compress(NSString *str);
 
 /*
+ * Same as str_splice(str, range, @"").
+ * (chainable)
+ *
+ *     str_delete(@"foobar", NSMakeRange(3, 3))
+ *     => @"foo"
+ */
+NSString *str_delete(NSString *str, NSRange range);
+
+/*
  * Replace tabs with `tabsize` number of spaces in `str`.
  * (chainable)
  *
  *     str_expand_tabs(@"\tx = 1;", 2)  =>  @"  x = 1;"
  */
 NSString *str_expand_tabs(NSString *str, NSUInteger tabsize);
+
+/*
+ * Same as str_splice(str, NSMakeRange(position, 0), newstr).
+ * (chainable)
+ *
+ *     str_insert(@"foo", @"bar", 2)
+ *     => @"fobaro"
+ */
+NSString *str_insert(NSString *str, NSString *newstr, NSUInteger position);
 
 /*
  * Repeat the string `count` times, inserting `sep` in-between. If `count` == 0,
@@ -74,6 +92,29 @@ NSString *str_repeat(NSString *str, NSUInteger count, NSString *sep);
  *     => @"bar.foo two.one"
  */
 NSString *str_replace(NSString *str, NSString *pattern, NSString *repl);
+
+/*
+ * Remove `range.length` characters starting at `range.position` and insert
+ * `newstr` at the same position.
+ *
+ * If `range.length == 0`, no characters are remove, only the insertion is
+ * performed. In this case, it is equivalent to str_insert.
+ *
+ * If `newstr == @""`, only the removal is performed. In this case, it is
+ * equivalent to str_delete.
+ *
+ * (chainable)
+ *
+ *     str_splice(@"foobar", NSMakeRange(3, 3), @"s")
+ *     => @"foos"
+ *
+ *     str_splice(@"foobar", NSMakeRange(3, 0), @"-")
+ *     => @"foo-bar"
+ *
+ *     str_splice(@"foobar", NSMakeRange(3, 3), @"")
+ *     => @"foo"
+ */
+NSString *str_splice(NSString *str, NSRange range, NSString *newstr);
 
 /*
  * Trim whitespace at the beginning of `str`.
