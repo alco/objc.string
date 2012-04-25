@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'ObjStrings' target in the 'ObjStrings' project
-//
-
-#ifdef __OBJC__
-    #import <Foundation/Foundation.h>
-#endif
