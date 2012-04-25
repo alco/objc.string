@@ -199,7 +199,7 @@ NSString *str_chain(NSString *s)
 {
     // Set up an associated flag so that other methods know that the string is being chained
     NSMutableString *str = [NSMutableString stringWithString:s];
-    objc_setAssociatedObject(str, &objective_string_chain_flag, @"", OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(str, &objc_string_chain_flag, @"", OBJC_ASSOCIATION_ASSIGN);
     return str;
 }
 
@@ -213,7 +213,7 @@ NSString *str_chain_block(NSString *s, void (^block)(NSString *s))
 NSMutableString *str_chain_fast(NSMutableString *s)
 {
     // Same as str_chain, but don't create a new string
-    objc_setAssociatedObject(s, &objective_string_chain_flag, @"", OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(s, &objc_string_chain_flag, @"", OBJC_ASSOCIATION_ASSIGN);
     return s;
 }
 
@@ -225,10 +225,10 @@ NSMutableString *str_chain_block_fast(NSMutableString *s, void (^block)(NSMutabl
 
 NSString *str_unchain(NSString *s)
 {
-    id ref = objc_getAssociatedObject(s, &objective_string_chain_flag);
+    id ref = objc_getAssociatedObject(s, &objc_string_chain_flag);
     NSCAssert(ref, @"Trying to unchain a string that was not chained.");
 
-    objc_setAssociatedObject(s, &objective_string_chain_flag, nil, OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(s, &objc_string_chain_flag, nil, OBJC_ASSOCIATION_ASSIGN);
     return s;
 }
 
