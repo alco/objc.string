@@ -34,7 +34,7 @@ This is an early development version. I'd love to hear your feedback and suggest
 
 ## Features ##
 
-Here's what the library does do:
+It's important to note, that **objc.string** does not replace the standard methods of `NSString`, it complements them. Some of the methods have been overloaded to provide support for the chaining mechanism (described below). Here's what the library does do:
 
 * provides a comprehensive and consistent API
 * the same API is used to deal with plain strings as well as regular expressions
