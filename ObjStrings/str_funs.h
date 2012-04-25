@@ -27,6 +27,7 @@ NSString *str_compress(NSString *str);
 
 /*
  * Replace tabs with `tabsize` number of spaces in `str`.
+ * (chainable)
  *
  *     str_expand_tabs(@"\tx = 1;", 2)  =>  @"  x = 1;"
  */

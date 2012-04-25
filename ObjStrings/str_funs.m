@@ -42,29 +42,13 @@ NSString *str_compress(NSString *s)
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"\\s+" 
                                                                            options:0
                                                                              error:NULL];
-    NSMutableString *str;
-    if (IS_CHAINING(s)) {
-        NSLog(@">>> Chaining compress <<<");
-        str = (NSMutableString *)s;
-    } else {
-        str = [NSMutableString stringWithString:s];
-    }
-    [regex replaceMatchesInString:str options:0 range:WHOLE_RANGE(str) withTemplate:@" "];
-    return str;
+    return str_replace(s, (NSString *)regex, @" ");
 }
 
 NSString *str_expand_tabs(NSString *s, NSUInteger tabsize)
 {
-    NSMutableString *str;
-    if (IS_CHAINING(s)) {
-        NSLog(@">>> Chaining expand_tabs <<<");
-        str = (NSMutableString *)s;
-    } else {
-        str = [NSMutableString stringWithString:s];
-    }
     NSString *tab_str = str_repeat(@" ", tabsize, @"");
-    [str replaceOccurrencesOfString:@"\t" withString:tab_str options:0 range:WHOLE_RANGE(str)];
-    return str;
+    return str_replace(s, @"\t", tab_str);
 }
 
 NSString *str_repeat(NSString *s, NSUInteger count, NSString *sep)
@@ -117,15 +101,7 @@ NSString *str_ltrim(NSString *s)
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^\\s+"
                                                                            options:0
                                                                              error:NULL];
-    NSMutableString *str;
-    if (IS_CHAINING(s)) {
-        NSLog(@">>> Chaining ltrim <<<)");
-        str = (NSMutableString *)s;
-    } else {
-        str = [NSMutableString stringWithString:s];
-    }
-    [regex replaceMatchesInString:str options:0 range:WHOLE_RANGE(str) withTemplate:@""];
-    return str;
+    return str_replace(s, (NSString *)regex, @"");
 }
 
 NSString *str_rtrim(NSString *s)
@@ -133,15 +109,7 @@ NSString *str_rtrim(NSString *s)
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"\\s+$"
                                                                            options:0
                                                                              error:NULL];
-    NSMutableString *str;
-    if (IS_CHAINING(s)) {
-        NSLog(@">>> Chaining rtrim <<<)");
-        str = (NSMutableString *)s;
-    } else {
-        str = [NSMutableString stringWithString:s];
-    }
-    [regex replaceMatchesInString:str options:0 range:WHOLE_RANGE(str) withTemplate:@""];
-    return str;
+    return str_replace(s, (NSString *)regex, @"");
 }
 
 NSString *str_trim(NSString *s)
