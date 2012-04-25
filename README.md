@@ -3,6 +3,7 @@ objc.string
 
 Self-contained library for efficient string manipulation in Objective-C.
 
+
 ## Motivation ##
 
 It is quite surprising, but no such library has been developed yet, at least in the open source land. Or I just haven't found one.
@@ -29,6 +30,17 @@ This is an early development version. I'd love to hear your feedback and suggest
 
   [1]: https://github.com/epeli/underscore.string
   [2]: http://docs.python.org/library/stdtypes.html#string-methods
+
+
+## Features ##
+
+Here's what the library does do:
+
+* provides a comprehensive and consistent API
+* the same API is used to deal with plain strings as well as regular expressions
+* embraces functional approach (treats both `NSString` and `NSMutableString` as immutable)
+* while still providing a way to modify strings "in place"
+* contains a complete set of unit tests and benchmarks
 
 
 ## Core Concepts ##
@@ -101,9 +113,18 @@ NSMutableString *mstr = ...;
 
 Another nice feature of **objc.string** is that it provides support for multiple workflows. The basic functionality is implemented as a set of functions in the _str_funs.m_ file. Categories are also provided for `NSString` and `NSMutableString`. If you like the category approach, add the _objc.string_ directory to your project and include the _NSString+ObjCStringAdditions.h_ file where you want to use it. If you're not a fan of categories, add only _str_funs.h_ and _str_funs.m_ to your project and use plain functions.
 
+
 ## Documentation ##
 
 Documentation is not yet available. See the list of available functions in the _str_funs.h_ file.
+
+
+## Running Tests ##
+
+We use [GHUnit][3] for testing purposes, it is included as a git submodule. To prepare the test project, run `make test` in the project's root directory. This will fetch the submodule and build it. Once it's done, open _ObjCStringTests.xcodeproj_ in the _tests_ directory and run it.
+
+  [3]: https://github.com/gabriel/gh-unit
+
 
 ## License ##
 
