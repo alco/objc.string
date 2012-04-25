@@ -6,6 +6,8 @@
                                                                                options:0       \
                                                                                  error:NULL])
 
+#define ARRAY(...) [NSArray arrayWithObjects:__VA_ARGS__, nil]
+
 
 @interface StringTests: GHTestCase
 @end
@@ -70,6 +72,51 @@
     GHAssertEqualStrings(@"foo \t\n\f\r  ", [@"  \r\f\n\t foo \t\n\f\r  " ltrim], @"");
     GHAssertEqualStrings(@"  \r\f\n\t foo", [@"  \r\f\n\t foo \t\n\f\r  " rtrim], @"");
     GHAssertEqualStrings(@"foo", [@"  \r\f\n\t foo \t\n\f\r  " trim], @"");
+}
+
+#pragma mark -
+
+- (void)testJoin
+{
+    NSArray *comps = ARRAY(@"one", @"two", @"three");
+    GHAssertEqualStrings(@"onetwothree", [@"" join:comps], @"");
+    GHAssertEqualStrings(@"one two three", [@" " join:comps], @"");
+    GHAssertEqualStrings(@"one..two..three", [@".." join:comps], @"");
+}
+
+- (void)testChop
+{
+    GHAssertEqualObjects(ARRAY(@"h", @"e", @"l", @"l", @"o"), [@"hello" chop], @"");
+    GHAssertEqualObjects(ARRAY(@"he", @"ll", @"o"), [@"hello" chop:2], @"");
+    GHAssertEqualObjects(ARRAY(@"hello"), [@"hello" chop:0], @"");
+}
+
+- (void)testSplit
+{
+    GHAssertEqualObjects(ARRAY(@"a", @"b", @"c", @"d"), [@"a b\nc\t  d" split], @"");
+    GHAssertEqualObjects(ARRAY(@"", @"a", @"b", @"c", @"d", @""), [@" a b\nc\t  d " split], @"");
+}
+
+- (void)testSplitLines
+{
+    GHAssertEqualObjects(ARRAY(@"foo", @"bar"), [@"foo\nbar" splitLines], @"");
+    GHAssertEqualObjects(ARRAY(@"", @"one", @" two ", @"three", @""), [@"\none\n two \nthree\n" splitLines], @"");
+}
+
+- (void)testSplitSep
+{
+    GHAssertEqualObjects(ARRAY(@"a", @"b", @"", @"c", @"d"), [@"a,b,,c,d" split:@","], @"");
+    GHAssertEqualObjects(ARRAY(@"a", @"b", @"c,d"), [@"a,b,c,d" split:@"," times:2], @"");
+    GHAssertEqualObjects(ARRAY(@"a,b,c,d"), [@"a,b,c,d" split:@"," times:0], @"");
+}
+
+#pragma mark -
+
+- (void)testCount
+{
+    GHAssertEquals((NSUInteger)3, [@"hello world" count:@"l"], @"");
+    GHAssertEquals((NSUInteger)3, [@" hello world " count:@" "], @"");
+    GHAssertEquals((NSUInteger)2, [@"foo bar foo" count:@"foo"], @"");
 }
 
 @end
