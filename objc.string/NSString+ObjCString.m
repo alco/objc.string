@@ -1,8 +1,5 @@
-#import "ObjString.h"
+#import "NSString+ObjCString.h"
 #import "str_funs.h"
-
-
-#define WHOLE_RANGE(str) NSMakeRange(0, [(str) length])
 
 
 @implementation NSString(ObjectiveString)
@@ -72,7 +69,7 @@
     return str_count(self, substr);
 }
 
-#pragma mark
+#pragma mark -
 
 - (NSString *)chain {
     return str_chain(self);

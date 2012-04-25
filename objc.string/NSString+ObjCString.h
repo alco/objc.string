@@ -1,6 +1,11 @@
 #import <Foundation/Foundation.h>
 
-@interface NSString(ObjectiveString)
+
+@interface NSString(ObjCString)
+
+/*
+ * The methods below are all chainable.
+ */
 
 - (NSString *)append:(NSString *)str;
 - (NSString *)capitalize;
@@ -9,10 +14,16 @@
 - (NSString *)expandTabs:(NSUInteger)tabsize;
 - (NSString *)repeat:(NSUInteger)count;
 - (NSString *)repeat:(NSUInteger)count sep:(NSString *)separator;
-- (NSString *)replace:(NSString *)substr with:(NSString *)newstr;
+- (NSString *)replace:(NSString *)substr with:(NSString *)repl;
 - (NSString *)ltrim;
 - (NSString *)rtrim;
 - (NSString *)trim;
+
+#pragma mark -
+
+/*
+ * Various string <-> array methods.
+ */
 
 - (NSString *)join:(NSArray *)components;
 - (NSArray *)chop;  // -chop:1
@@ -22,7 +33,17 @@
 - (NSArray *)split:(NSString *)separator;
 - (NSArray *)split:(NSString *)separator times:(NSUInteger)times;
 
+#pragma mark -
+
+/*
+ * Other utility methods.
+ */
+
 - (NSUInteger)count:(NSString *)substr;
+
+/*
+ * Chaining mechanism.
+ */
 
 // The -chain method makes it possible to reduce the number of object allocations
 // when performing a sequence of string operations. The returned object can be

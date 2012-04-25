@@ -5,8 +5,12 @@
 #define WHOLE_RANGE(str) NSMakeRange(0, [(str) length])
 #define IS_WHITESPACE(c) (c == '\t' || c == '\v' || c == '\n' || c == '\r' || c == ' ')
 
-#define IS_CHAINING(str) objc_getAssociatedObject(str, &objective_string_chain_flag)
-static int objective_string_chain_flag;
+#define $regex(pattern)  ((NSString *)[NSRegularExpression regularExpressionWithPattern:pattern \
+                                                                                options:0       \
+                                                                                  error:NULL])
+
+#define IS_CHAINING(str) objc_getAssociatedObject(str, &objc_string_chain_flag)
+static int objc_string_chain_flag;
 
 
 void str_ltrim_d(NSMutableString *s);
@@ -16,7 +20,6 @@ void str_rtrim_d(NSMutableString *s);
 NSString *str_append(NSString *s1, NSString *s2)
 {
     if (IS_CHAINING(s1)) {
-        NSLog(@">>> Chainging append <<<");
         NSMutableString *str = (NSMutableString *)s1;
         [str appendString:s2];
         return str;
@@ -28,7 +31,6 @@ NSString *str_capitalize(NSString *s)
 {
     NSMutableString *str;
     if (IS_CHAINING(s)) {
-        NSLog(@">>> Chaining capitalize <<<");
         str = (NSMutableString *)s;
     } else {
         str = [NSMutableString stringWithString:s];
@@ -39,10 +41,7 @@ NSString *str_capitalize(NSString *s)
 
 NSString *str_compress(NSString *s)
 {
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"\\s+" 
-                                                                           options:0
-                                                                             error:NULL];
-    return str_replace(s, (NSString *)regex, @" ");
+    return str_replace(s, $regex(@"\\s+"), @" ");
 }
 
 NSString *str_expand_tabs(NSString *s, NSUInteger tabsize)
@@ -55,24 +54,24 @@ NSString *str_repeat(NSString *s, NSUInteger count, NSString *sep)
 {
     NSMutableString *str;
     if (IS_CHAINING(s)) {
-        NSLog(@">>> Chaining repeat <<<");
         str = (NSMutableString *)s;
     } else {
         if (count == 0)
             return @"";
         str = [NSMutableString stringWithCapacity:([s length] + [sep length]) * count];
     }
-    
+
     if (count == 0) {
         [str setString:@""];
         return str;
     }
-    
+
     for (NSUInteger i = 0; i < count - 1; ++i) {
         [str appendString:s];
         [str appendString:sep];
     }
     [str appendString:s];
+
     return str;
 }
 
@@ -80,12 +79,11 @@ NSString *str_replace(NSString *s, NSString *substr, NSString *repl)
 {
     NSMutableString *str;
     if (IS_CHAINING(s)) {
-        NSLog(@">>> Chaining replace <<<");
         str = (NSMutableString *)s;
     } else {
         str = [NSMutableString stringWithString:s];
     }
-    
+
     if ([substr isKindOfClass:[NSRegularExpression class]])
         [(NSRegularExpression *)substr replaceMatchesInString:str
                                                       options:0
@@ -98,24 +96,17 @@ NSString *str_replace(NSString *s, NSString *substr, NSString *repl)
 
 NSString *str_ltrim(NSString *s)
 {
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^\\s+"
-                                                                           options:0
-                                                                             error:NULL];
-    return str_replace(s, (NSString *)regex, @"");
+    return str_replace(s, $regex(@"^\\s+"), @"");
 }
 
 NSString *str_rtrim(NSString *s)
 {
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"\\s+$"
-                                                                           options:0
-                                                                             error:NULL];
-    return str_replace(s, (NSString *)regex, @"");
+    return str_replace(s, $regex(@"\\s+$"), @"");
 }
 
 NSString *str_trim(NSString *s)
 {
     if (IS_CHAINING(s)) {
-        NSLog(@">>> Chaining trim <<<");
         NSMutableString *str = (NSMutableString *)s;
         str_ltrim_d(str);
         str_rtrim_d(str);
@@ -135,11 +126,11 @@ NSArray *str_chop(NSString *s, NSUInteger count)
 {
     if (count == 0)
         return [NSArray arrayWithObject:s];
-    
+
     NSUInteger len = [s length];
     NSUInteger residual = len % count;
     NSUInteger i;
-    
+
     NSMutableArray *array = [NSMutableArray arrayWithCapacity:len/count + 1];
     for (i = 0; i < len - residual; i += count)
         [array addObject:[s substringWithRange:NSMakeRange(i, count)]];
@@ -162,7 +153,7 @@ NSArray *str_split(NSString *s, NSString *sep, NSUInteger count)
 {
     if (count == 0)
         return [NSArray arrayWithObject:s];
-    
+
     NSArray *components = [s componentsSeparatedByString:sep];
     if (count >= components.count - 1)
         return components;
@@ -206,7 +197,7 @@ NSUInteger str_count(NSString *s, NSString *substr)
 
 NSString *str_chain(NSString *s)
 {
-    // Set up an associated flag so that other methods know that self is being chained
+    // Set up an associated flag so that other methods know that the string is being chained
     NSMutableString *str = [NSMutableString stringWithString:s];
     objc_setAssociatedObject(str, &objective_string_chain_flag, @"", OBJC_ASSOCIATION_ASSIGN);
     return str;
@@ -221,6 +212,7 @@ NSString *str_chain_block(NSString *s, void (^block)(NSString *s))
 
 NSMutableString *str_chain_fast(NSMutableString *s)
 {
+    // Same as str_chain, but don't create a new string
     objc_setAssociatedObject(s, &objective_string_chain_flag, @"", OBJC_ASSOCIATION_ASSIGN);
     return s;
 }
@@ -261,7 +253,7 @@ void str_rtrim_d(NSMutableString *s)
     NSUInteger len = [s length];
     if (len < 1)
         return;
-    
+
     NSInteger i;
     for (i = len - 1; i >= 0; --i) {
         unichar c = [s characterAtIndex:i];

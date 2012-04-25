@@ -1,5 +1,9 @@
 #import <Foundation/Foundation.h>
 
+/* ***
+ * The functions below are all chainable.
+ * ***
+ */
 
 /*
  * Append `s2` after `s1`. Synonym for [s1 stringByAppendingString:s2].
@@ -81,7 +85,10 @@ NSString *str_rtrim(NSString *str);
  */
 NSString *str_trim(NSString *str);
 
-/***/
+/* ***
+ * Various string <-> array functions.
+ * ***
+ */
 
 /*
  * Join the strings in the given array into one string interleaving them with `sep`.
@@ -122,7 +129,10 @@ NSArray *str_split_lines(NSString *str);
  */
 NSArray *str_split(NSString *str, NSString *sep, NSUInteger count);
 
-/***/
+/* ***
+ * Other utility functions.
+ * ***
+ */
 
 /*
  * Count the number of occurrences of `substr` in `str`.
@@ -132,7 +142,10 @@ NSArray *str_split(NSString *str, NSString *sep, NSUInteger count);
  */
 NSUInteger str_count(NSString *str, NSString *substr);
 
-/***/
+/* ***
+ * Chaining mechanism.
+ * ***
+ */
 
 NSString *str_chain(NSString *str);
 NSString *str_chain_block(NSString *str, void (^block)(NSString *str));
