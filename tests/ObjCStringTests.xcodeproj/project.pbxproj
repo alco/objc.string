@@ -12,6 +12,10 @@
 		6E0721EB15480F8A00D4F296 /* GHUnit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6E0721E815480F4F00D4F296 /* GHUnit.framework */; };
 		6E0721ED15480FA800D4F296 /* GHUnitTestMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0721EC15480FA800D4F296 /* GHUnitTestMain.m */; };
 		6E0721F11548106C00D4F296 /* StringTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0721F01548106C00D4F296 /* StringTests.m */; };
+		6E0722011548127400D4F296 /* NSMutableString+ObjCString.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0721FC1548127400D4F296 /* NSMutableString+ObjCString.m */; };
+		6E0722021548127400D4F296 /* NSString+ObjCString.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0721FE1548127400D4F296 /* NSString+ObjCString.m */; };
+		6E0722031548127400D4F296 /* str_funs.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0722001548127400D4F296 /* str_funs.m */; };
+		6E0722071548136E00D4F296 /* ChainTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0722061548136E00D4F296 /* ChainTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,6 +41,13 @@
 		6E0721E815480F4F00D4F296 /* GHUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GHUnit.framework; path = "gh-unit/Project-MacOSX/build/Release/GHUnit.framework"; sourceTree = "<group>"; };
 		6E0721EC15480FA800D4F296 /* GHUnitTestMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GHUnitTestMain.m; path = "gh-unit/Classes-MacOSX/GHUnitTestMain.m"; sourceTree = SOURCE_ROOT; };
 		6E0721F01548106C00D4F296 /* StringTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringTests.m; sourceTree = "<group>"; };
+		6E0721FB1548127400D4F296 /* NSMutableString+ObjCString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableString+ObjCString.h"; sourceTree = "<group>"; };
+		6E0721FC1548127400D4F296 /* NSMutableString+ObjCString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+ObjCString.m"; sourceTree = "<group>"; };
+		6E0721FD1548127400D4F296 /* NSString+ObjCString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ObjCString.h"; sourceTree = "<group>"; };
+		6E0721FE1548127400D4F296 /* NSString+ObjCString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ObjCString.m"; sourceTree = "<group>"; };
+		6E0721FF1548127400D4F296 /* str_funs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = str_funs.h; sourceTree = "<group>"; };
+		6E0722001548127400D4F296 /* str_funs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = str_funs.m; sourceTree = "<group>"; };
+		6E0722061548136E00D4F296 /* ChainTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChainTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +66,7 @@
 		6E0721B415480DDC00D4F296 = {
 			isa = PBXGroup;
 			children = (
+				6E0721FA1548127400D4F296 /* objc.string */,
 				6E0721EE1548103D00D4F296 /* Classes */,
 				6E0721C915480DDD00D4F296 /* ObjCStringTests */,
 				6E0721C215480DDC00D4F296 /* Frameworks */,
@@ -103,8 +115,23 @@
 			isa = PBXGroup;
 			children = (
 				6E0721F01548106C00D4F296 /* StringTests.m */,
+				6E0722061548136E00D4F296 /* ChainTests.m */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		6E0721FA1548127400D4F296 /* objc.string */ = {
+			isa = PBXGroup;
+			children = (
+				6E0721FB1548127400D4F296 /* NSMutableString+ObjCString.h */,
+				6E0721FC1548127400D4F296 /* NSMutableString+ObjCString.m */,
+				6E0721FD1548127400D4F296 /* NSString+ObjCString.h */,
+				6E0721FE1548127400D4F296 /* NSString+ObjCString.m */,
+				6E0721FF1548127400D4F296 /* str_funs.h */,
+				6E0722001548127400D4F296 /* str_funs.m */,
+			);
+			name = objc.string;
+			path = ../objc.string;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -170,6 +197,10 @@
 			files = (
 				6E0721ED15480FA800D4F296 /* GHUnitTestMain.m in Sources */,
 				6E0721F11548106C00D4F296 /* StringTests.m in Sources */,
+				6E0722011548127400D4F296 /* NSMutableString+ObjCString.m in Sources */,
+				6E0722021548127400D4F296 /* NSString+ObjCString.m in Sources */,
+				6E0722031548127400D4F296 /* str_funs.m in Sources */,
+				6E0722071548136E00D4F296 /* ChainTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
