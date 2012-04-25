@@ -27,6 +27,7 @@
     GHAssertEqualStrings(@" foo bar", [@" foo bar" capitalize], @"");
     GHAssertEqualStrings(@"1foo bar", [@"1foo bar" capitalize], @"");
     GHAssertEqualStrings(@"Foo bar", [@"Foo bar" capitalize], @"");
+    GHAssertEqualStrings(@"Здравствуй, дед", [@"здравствуй, дед" capitalize], @"");
 }
 
 - (void)testCompress
