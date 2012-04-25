@@ -1,5 +1,3 @@
-tests/gh-unit/
-
 # Xcode
 build/*
 *.pbxuser

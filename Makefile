@@ -1,5 +1,5 @@
-test: gh_unit
+test: tests/gh-unit
 	cd tests/gh-unit/Project-MacOSX; make
 
-gh_unit: tests/gh-unit
+tests/gh-unit:
 	git submodule update --init
