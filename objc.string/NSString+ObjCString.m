@@ -52,6 +52,9 @@
 - (NSString *)replace:(NSString *)substr with:(NSString *)newstr {
     return str_replace(self, substr, newstr);
 }
+- (NSString *)reverse {
+    return str_reverse(self);
+}
 - (NSString *)splice:(NSRange)range with:(NSString *)str {
     return str_splice(self, range, str);
 }

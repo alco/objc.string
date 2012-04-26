@@ -31,7 +31,7 @@
 - (NSString *)repeat:(NSUInteger)count;
 - (NSString *)repeat:(NSUInteger)count sep:(NSString *)separator;
 - (NSString *)replace:(NSString *)substr with:(NSString *)repl;
-- (NSString *)reverse;                              // <--
+- (NSString *)reverse;
 - (NSString *)splice:(NSRange)range with:(NSString *)str;
 - (NSString *)titlecase;
 - (NSString *)ltrim;

@@ -174,6 +174,31 @@ NSString *str_replace(NSString *s, NSString *substr, NSString *repl)
     return str;
 }
 
+NSString *str_reverse(NSString *s)
+{
+    // *** IMPORTANT ***
+    // This method does not modify the input string because of efficiency concerns.
+    // It creates a new string and makes it chainable. The input string is abandoned and should be autoreleased.
+    //
+    // By returning a new string we break the pointer comparison between the input chained string and the result
+    // returned by the function. This is going to be reflected in the test code.
+
+    // This is a fast way to get access to string characters
+    NSUInteger len = [s length];
+    CFRange whole_range = { 0, len };
+    CFStringInlineBuffer buf;
+    CFStringInitInlineBuffer((CFStringRef)s, &buf, whole_range);
+
+    UniChar *chars = (UniChar *)malloc(whole_range.length * sizeof(UniChar));
+    for (NSUInteger index = 0; index < len; ++index) {
+        UniChar c = CFStringGetCharacterFromInlineBuffer(&buf, index);
+        chars[len - index - 1] = c;
+    }
+
+    CFMutableStringRef str = CFStringCreateMutableWithExternalCharactersNoCopy(kCFAllocatorDefault, chars, len, len, NULL);
+    return [str_chain_fast((NSMutableString *)str) autorelease];
+}
+
 NSString *str_splice(NSString *s, NSRange range, NSString *newstr)
 {
     NSMutableString *str;

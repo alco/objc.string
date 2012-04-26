@@ -120,6 +120,13 @@
     GHAssertEqualStrings(@"bar.foo two.one", [@"foo.bar one.two" replace:$regex(@"(\\w+)\\.(\\w+)") with:@"$2.$1"], @"");
 }
 
+- (void)testReverse
+{
+    GHAssertEqualStrings(@"dlrow olleh", [@"hello world" reverse], @"");
+    GHAssertEqualStrings(@"löñâpsé", [@"éspâñöl" reverse], @"");
+    GHAssertEqualStrings(@"", [@"" reverse], @"");
+}
+
 - (void)testSplice
 {
     GHAssertEqualStrings(@"foo", [@"foo" splice:NSMakeRange(0, 0) with:@""], @"");

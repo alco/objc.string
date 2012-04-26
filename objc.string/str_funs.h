@@ -146,6 +146,14 @@ NSString *str_repeat(NSString *str, NSUInteger count, NSString *sep);
 NSString *str_replace(NSString *str, NSString *pattern, NSString *repl);
 
 /*
+ * Reverse the string contents.
+ * (chainable)
+ *
+ *     str_reverse(@"hello")  =>  @"olleh"
+ */
+NSString *str_reverse(NSString *str);
+
+/*
  * Remove `range.length` characters starting at `range.position` and insert
  * `newstr` at the same position.
  *
