@@ -166,7 +166,6 @@ NSString *str_titlecase(NSString *s)
     // First, force every character to lowercase. Then, capitalize the first
     // letter of each word.
     CFLocaleRef locale = CFLocaleCopyCurrent();
-    CFStringLowercase(str, locale);
     CFStringCapitalize(str, locale);
     CFRelease(locale);
 
