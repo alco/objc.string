@@ -5,6 +5,7 @@
                                                                                options:0       \
                                                                                  error:NULL])
 
+
 /*
  * *** General notes ***
  *
@@ -208,6 +209,22 @@ NSString *str_rtrim(NSString *str);
  *     str_trim(@"\t\n  hello\r\v \b")  =>  @"hello"
  */
 NSString *str_trim(NSString *str);
+
+/*
+ * Truncate the string to the specified length. Truncated content is replaced
+ * by an ellipsis (...). The resulting string's length <= `length`.
+ * (chainable)
+ *
+ *     str_truncate(@"hello world", 10, kTruncateRight)
+ *     => @"hello w..."
+ *
+ *     str_truncate(@"hello world", 10, kTruncateMiddle)
+ *     => @"hell...rld"
+ *
+ *     str_truncate(@"hello world", 11, kTruncateMiddle)
+ *     => @"hello world"
+ */
+NSString *str_truncate(NSString *str, NSUInteger length, int flag);
 
 /*
  * Convert the string to upper case.

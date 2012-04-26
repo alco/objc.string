@@ -70,6 +70,12 @@
 - (NSString *)trim {
     return str_trim(self);
 }
+- (NSString *)truncate:(NSUInteger)length {
+    return str_truncate(self, length, kTruncateRight);
+}
+- (NSString *)truncate:(NSUInteger)length at:(TruncateFlag)flag {
+    return str_truncate(self, length, flag);
+}
 - (NSString *)uppercase {
     return str_uppercase(self);
 }

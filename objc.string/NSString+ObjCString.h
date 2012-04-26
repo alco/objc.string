@@ -12,6 +12,12 @@
  * The methods below are all chainable.
  */
 
+typedef enum {
+    kTruncateLeft,
+    kTruncateMiddle,
+    kTruncateRight
+} TruncateFlag;
+
 - (NSString *)append:(NSString *)str;
 - (NSString *)capitalize;
 - (NSString *)compress;
@@ -37,8 +43,8 @@
 - (NSString *)ltrim;
 - (NSString *)rtrim;
 - (NSString *)trim;
-- (NSString *)truncate;                             // <--
-- (NSString *)truncate:(int)flags;                  // <--
+- (NSString *)truncate:(NSUInteger)length;  // truncate:length at:kTruncateRight
+- (NSString *)truncate:(NSUInteger)length at:(TruncateFlag)flag;
 - (NSString *)uppercase;
 
 /*

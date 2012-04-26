@@ -254,6 +254,41 @@ NSString *str_trim(NSString *s)
     return [s stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
+NSString *str_truncate(NSString *s, NSUInteger length, int flag)
+{
+    NSUInteger len = [s length];
+    if (len <= length)
+        return s;
+
+    NSMutableString *str;
+    if (IS_CHAINING(s)) {
+        str = (NSMutableString *)s;
+    } else {
+        str = [NSMutableString stringWithString:s];
+    }
+
+    NSUInteger len_diff = len - length;
+    NSUInteger rm_len = 3 + len_diff;
+    switch (flag) {
+    case 0:  // left
+        [str replaceCharactersInRange:NSMakeRange(0, rm_len) withString:@"..."];
+        break;
+
+    case 1:  // middle
+        [str replaceCharactersInRange:NSMakeRange(length/2 - 1, rm_len) withString:@"..."];
+        break;
+
+    case 2:  // right
+        [str replaceCharactersInRange:NSMakeRange(length - 3, rm_len) withString:@"..."];
+        break;
+
+    default:
+        break;
+    }
+
+    return str;
+}
+
 NSString *str_uppercase(NSString *s)
 {
     if (IS_CHAINING(s)) {

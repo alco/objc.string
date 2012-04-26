@@ -143,6 +143,12 @@
     GHAssertEquals(_chainedStr, [[_chainedStr trim] unchain], @"");
 }
 
+- (void)testTruncate
+{
+    GHAssertEquals(_chainedStr, [_chainedStr truncate:5], @"");
+    GHAssertEquals(_chainedStr, [[_chainedStr truncate:5 at:kTruncateLeft] unchain], @"");
+}
+
 - (void)testUppercase
 {
     GHAssertEquals(_chainedStr, [_chainedStr uppercase], @"");
