@@ -105,6 +105,13 @@
     GHAssertThrows([@"foo" splice:NSMakeRange(4, 0) with:@""], @"");
 }
 
+- (void)testTitlecase
+{
+    GHAssertEqualStrings(@"Hello World", [@"HELLO world" titlecase], @"");
+    GHAssertEqualStrings(@"Добрый День", [@"добрый день" titlecase], @"");
+    GHAssertEqualStrings(@"日本語　にほんご", [@"日本語　にほんご" titlecase], @"");
+}
+
 - (void)testTrim
 {
     GHAssertEqualStrings(@"foo \t\n\f\r  ", [@"  \r\f\n\t foo \t\n\f\r  " ltrim], @"");

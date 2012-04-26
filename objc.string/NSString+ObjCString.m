@@ -40,6 +40,9 @@
 - (NSString *)splice:(NSRange)range with:(NSString *)str {
     return str_splice(self, range, str);
 }
+- (NSString *)titlecase {
+    return str_titlecase(self);
+}
 - (NSString *)ltrim {
     return str_ltrim(self);
 }

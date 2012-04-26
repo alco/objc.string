@@ -24,6 +24,7 @@
 - (NSString *)repeat:(NSUInteger)count sep:(NSString *)separator;
 - (NSString *)replace:(NSString *)substr with:(NSString *)repl;
 - (NSString *)splice:(NSRange)range with:(NSString *)str;
+- (NSString *)titlecase;
 - (NSString *)ltrim;
 - (NSString *)rtrim;
 - (NSString *)trim;

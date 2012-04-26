@@ -124,6 +124,24 @@ NSString *str_splice(NSString *s, NSRange range, NSString *newstr)
     return str;
 }
 
+NSString *str_titlecase(NSString *s)
+{
+    CFMutableStringRef str;
+    if (IS_CHAINING(s)) {
+        str = (CFMutableStringRef)s;
+    } else {
+        str = (CFMutableStringRef)[NSMutableString stringWithString:s];
+    }
+    // First, force every character to lowercase. Then, capitalize the first
+    // letter of each word.
+    CFLocaleRef locale = CFLocaleCopyCurrent();
+    CFStringLowercase(str, locale);
+    CFStringCapitalize(str, locale);
+    CFRelease(locale);
+
+    return (NSString *)str;
+}
+
 NSString *str_ltrim(NSString *s)
 {
     return str_replace(s, $regex(@"^\\s+"), @"");

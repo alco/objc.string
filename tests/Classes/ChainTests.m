@@ -95,6 +95,12 @@
     GHAssertEquals(_chainedStr, [[_chainedStr rtrim] unchain], @"");
 }
 
+- (void)testTitlecase
+{
+    GHAssertEquals(_chainedStr, [_chainedStr titlecase], @"");
+    GHAssertEquals(_chainedStr, [[_chainedStr titlecase] unchain], @"");
+}
+
 - (void)testTrim
 {
     GHAssertEquals(_chainedStr, [_chainedStr trim], @"");

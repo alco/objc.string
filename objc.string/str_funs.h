@@ -125,6 +125,15 @@ NSString *str_replace(NSString *str, NSString *pattern, NSString *repl);
 NSString *str_splice(NSString *str, NSRange range, NSString *newstr);
 
 /*
+ * Make every word in the string begin with an upper case letter while forcing
+ * the remaining letters to lowercase.
+ * (chainable)
+ *
+ *     str_titlecase(@"one two")  =>  @"One Two"
+ */
+NSString *str_titlecase(NSString *str);
+
+/*
  * Trim whitespace at the beginning of `str`.
  * (chainable)
  *
@@ -273,14 +282,6 @@ BOOL str_is_blank(NSString *str);
 
 /** The functions below are not chainable **/
 
-/*
- * Make every word in the string begin with an upper case letter, other
- * characters in the word are forced to lowercase. Synonym for
- * [str capitalizedString].
- *
- *     str_titlecase(@"one two")  =>  @"One Two"
- */
-NSString *str_titlecase(NSString *str);
 
 
 /*
