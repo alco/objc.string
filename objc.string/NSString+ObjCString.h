@@ -79,14 +79,4 @@
 - (BOOL)isDigit;                               // <--
 - (BOOL)isAlnum;                               // <--
 
-/*
- * Convenience methods that wrap the standard NSString methods in a more
- * concise interface.
- */
-- (NSUInteger)find:(NSString *)substr;
-- (NSUInteger)find:(NSString *)substr in:(NSRange)range;
-- (NSUInteger)rfind:(NSString *)substr;
-- (NSUInteger)rfind:(NSString *)substr in:(NSRange)range;
-
-
 @end
