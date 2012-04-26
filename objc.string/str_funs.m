@@ -133,6 +133,45 @@ NSString *str_trim(NSString *s)
     return [s stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
+#pragma mark
+
+NSString *str_chain(NSString *s)
+{
+    // Set up an associated flag so that other methods know that the string is being chained
+    NSMutableString *str = [NSMutableString stringWithString:s];
+    objc_setAssociatedObject(str, &objc_string_chain_flag, @"", OBJC_ASSOCIATION_ASSIGN);
+    return str;
+}
+
+NSString *str_chain_block(NSString *s, void (^block)(NSString *s))
+{
+    NSString *str = str_chain(s);
+    block(str);
+    return str_unchain(str);
+}
+
+NSMutableString *str_chain_fast(NSMutableString *s)
+{
+    // Same as str_chain, but don't create a new string
+    objc_setAssociatedObject(s, &objc_string_chain_flag, @"", OBJC_ASSOCIATION_ASSIGN);
+    return s;
+}
+
+NSMutableString *str_chain_block_fast(NSMutableString *s, void (^block)(NSMutableString *s))
+{
+    block(str_chain_fast(s));
+    return (NSMutableString *)str_unchain(s);
+}
+
+NSString *str_unchain(NSString *s)
+{
+    id ref = objc_getAssociatedObject(s, &objc_string_chain_flag);
+    NSCAssert(ref, @"Trying to unchain a string that was not chained.");
+
+    objc_setAssociatedObject(s, &objc_string_chain_flag, nil, OBJC_ASSOCIATION_ASSIGN);
+    return s;
+}
+
 #pragma mark -
 
 NSString *str_join(NSString *s, NSArray *components)
@@ -191,7 +230,7 @@ NSArray *str_split(NSString *s, NSString *sep, NSUInteger count)
     return result;
 }
 
-#pragma mark
+#pragma mark -
 
 NSUInteger str_count(NSString *s, NSString *substr)
 {
@@ -211,43 +250,11 @@ NSUInteger str_count(NSString *s, NSString *substr)
     return count;
 }
 
-#pragma mark
-
-NSString *str_chain(NSString *s)
+BOOL str_is_blank(NSString *s)
 {
-    // Set up an associated flag so that other methods know that the string is being chained
-    NSMutableString *str = [NSMutableString stringWithString:s];
-    objc_setAssociatedObject(str, &objc_string_chain_flag, @"", OBJC_ASSOCIATION_ASSIGN);
-    return str;
-}
-
-NSString *str_chain_block(NSString *s, void (^block)(NSString *s))
-{
-    NSString *str = str_chain(s);
-    block(str);
-    return str_unchain(str);
-}
-
-NSMutableString *str_chain_fast(NSMutableString *s)
-{
-    // Same as str_chain, but don't create a new string
-    objc_setAssociatedObject(s, &objc_string_chain_flag, @"", OBJC_ASSOCIATION_ASSIGN);
-    return s;
-}
-
-NSMutableString *str_chain_block_fast(NSMutableString *s, void (^block)(NSMutableString *s))
-{
-    block(str_chain_fast(s));
-    return (NSMutableString *)str_unchain(s);
-}
-
-NSString *str_unchain(NSString *s)
-{
-    id ref = objc_getAssociatedObject(s, &objc_string_chain_flag);
-    NSCAssert(ref, @"Trying to unchain a string that was not chained.");
-
-    objc_setAssociatedObject(s, &objc_string_chain_flag, nil, OBJC_ASSOCIATION_ASSIGN);
-    return s;
+    NSRegularExpression *regex = (NSRegularExpression *)$regex(@"^\\s*$");
+    NSUInteger match_count = [regex numberOfMatchesInString:s options:0 range:WHOLE_RANGE(s)];
+    return match_count == 1;
 }
 
 #pragma mark -

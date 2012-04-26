@@ -49,6 +49,18 @@
 
 #pragma mark -
 
+- (NSString *)chain {
+    return str_chain(self);
+}
+- (NSString *)chain:(void (^)(NSString *s))block {
+    return str_chain_block(self, block);
+}
+- (NSString *)unchain {
+    return str_unchain(self);
+}
+
+#pragma mark -
+
 - (NSString *)join:(NSArray *)components {
     return str_join(self, components);
 }
@@ -78,16 +90,9 @@
     return str_count(self, substr);
 }
 
-#pragma mark -
-
-- (NSString *)chain {
-    return str_chain(self);
-}
-- (NSString *)chain:(void (^)(NSString *s))block {
-    return str_chain_block(self, block);
-}
-- (NSString *)unchain {
-    return str_unchain(self);
+- (BOOL)isBlank
+{
+    return str_is_blank(self);
 }
 
 @end

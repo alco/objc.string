@@ -149,4 +149,12 @@
     GHAssertEquals((NSUInteger)2, [@"foo bar foo" count:@"foo"], @"");
 }
 
+- (void)testIsBlank
+{
+    GHAssertTrue([@"" isBlank], @"");
+    GHAssertTrue([@" \t\n\r\f" isBlank], @"");
+    GHAssertTrue([@"　" isBlank], @"");  // this is a Japanese space
+    GHAssertFalse([@" . " isBlank], @"");
+}
+
 @end

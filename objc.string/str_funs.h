@@ -141,6 +141,53 @@ NSString *str_rtrim(NSString *str);
 NSString *str_trim(NSString *str);
 
 /* ***
+ * Chaining mechanism.
+ * ***
+ */
+
+/*
+ * The str_chain function makes it possible to reduce the number of object
+ * allocations when performing a sequence of string operations. The returned
+ * object can be treated as an ordinary string, but it will be modified
+ * in-place. To get back a clean string, use the str_unchain function.
+ *
+ * To keep your sanity, please don't let a chained string escape the scope it
+ * was defined in. This means that for each call to str_chain (or
+ * str_chain_fast) there should be a corresponding call to str_unchain in the
+ * same function scope. When using str_chain_block and str_chain_block_fast,
+ * this invariant is kept for you automatically, so you don't need to call
+ * str_unchain yourself.
+ */
+NSString *str_chain(NSString *str);
+
+/*
+ * str_chain_block allows you to perform a series of operations on a chained
+ * string in one block.  The benefit of this is to make sure that a chained
+ * string does not leave the scope of the function it is created in.
+ *
+ * When using this function, you don't need to call str_unchain.
+ */
+NSString *str_chain_block(NSString *str, void (^block)(NSString *str));
+
+/*
+ * This function works similarly to str_chain except that it modified the
+ * mutable string you pass to it.
+ */
+NSMutableString *str_chain_fast(NSMutableString *str);
+
+/*
+ * This works similarly to str_chain_block with the same optimizations applied
+ * as in str_chain_fast.
+ */
+NSMutableString *str_chain_block_fast(NSMutableString *str, void (^block)(NSMutableString *str));
+
+/*
+ * Unchain `str` and return it. Successive string operations on `str` will not
+ * modify it in place anymore.
+ */
+NSString *str_unchain(NSString *str);
+
+/* ***
  * Various string <-> array functions.
  * ***
  */
@@ -197,52 +244,15 @@ NSArray *str_split(NSString *str, NSString *sep, NSUInteger count);
  */
 NSUInteger str_count(NSString *str, NSString *substr);
 
-/* ***
- * Chaining mechanism.
- * ***
- */
-
 /*
- * The str_chain function makes it possible to reduce the number of object
- * allocations when performing a sequence of string operations. The returned
- * object can be treated as an ordinary string, but it will be modified
- * in-place. To get back a clean string, use the str_unchain function.
+ * True if `str` is empty or contains only whitespace characters.
  *
- * To keep your sanity, please don't let a chained string escape the scope it
- * was defined in. This means that for each call to str_chain (or
- * str_chain_fast) there should be a corresponding call to str_unchain in the
- * same function scope. When using str_chain_block and str_chain_block_fast,
- * this invariant is kept for you automatically, so you don't need to call
- * str_unchain yourself.
+ *     str_is_blank(@" \t\n\r\f")  =>  YES
+ *     str_is_blank(@"")           =>  YES
+ *     str_is_blank(@"a")          =>  NO
  */
-NSString *str_chain(NSString *str);
+BOOL str_is_blank(NSString *str);
 
-/*
- * str_chain_block allows you to perform a series of operations on a chained
- * string in one block.  The benefit of this is to make sure that a chained
- * string does not leave the scope of the function it is created in.
- *
- * When using this function, you don't need to call str_unchain.
- */
-NSString *str_chain_block(NSString *str, void (^block)(NSString *str));
-
-/*
- * This function works similarly to str_chain except that it modified the
- * mutable string you pass to it.
- */
-NSMutableString *str_chain_fast(NSMutableString *str);
-
-/*
- * This works similarly to str_chain_block with the same optimizations applied
- * as in str_chain_fast.
- */
-NSMutableString *str_chain_block_fast(NSMutableString *str, void (^block)(NSMutableString *str));
-
-/*
- * Unchain `str` and return it. Successive string operations on `str` will not
- * modify it in place anymore.
- */
-NSString *str_unchain(NSString *str);
 
 
 /** The functions below are not chainable **/

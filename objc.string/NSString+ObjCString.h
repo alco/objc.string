@@ -4,7 +4,7 @@
 @interface NSString(ObjCString)
 
 /* ***
- * For the description of each method see str_funs.h.
+ * For a description of each method see str_funs.h.
  * ***
  */
 
@@ -27,6 +27,14 @@
 - (NSString *)rtrim;
 - (NSString *)trim;
 
+/*
+ * Chaining mechanism.
+ */
+
+- (NSString *)chain;
+- (NSString *)chain:(void (^)(NSString *s))block;
+- (NSString *)unchain;
+
 #pragma mark -
 
 /*
@@ -48,13 +56,6 @@
  */
 
 - (NSUInteger)count:(NSString *)substr;
-
-/*
- * Chaining mechanism.
- */
-
-- (NSString *)chain;
-- (NSString *)chain:(void (^)(NSString *s))block;
-- (NSString *)unchain;
+- (BOOL)isBlank;
 
 @end
