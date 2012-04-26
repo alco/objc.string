@@ -177,11 +177,10 @@ NSString *str_replace(NSString *s, NSString *substr, NSString *repl)
 NSString *str_reverse(NSString *s)
 {
     // *** IMPORTANT ***
-    // This method does not modify the input string because of efficiency concerns.
-    // It creates a new string and makes it chainable. The input string is abandoned and should be autoreleased.
-    //
-    // By returning a new string we break the pointer comparison between the input chained string and the result
-    // returned by the function. This is going to be reflected in the test code.
+    // Currently, to keep the invariant of the chained string, we append characters
+    // to s when it is being chained. A more efficient way might to create a new string
+    // with the CFStringCreateMutableWithExternalCharactersNoCopy function. However,
+    // this would break the single-pointer invariant.
 
     // This is a fast way to get access to string characters
     NSUInteger len = [s length];
@@ -195,8 +194,14 @@ NSString *str_reverse(NSString *s)
         chars[len - index - 1] = c;
     }
 
-    CFMutableStringRef str = CFStringCreateMutableWithExternalCharactersNoCopy(kCFAllocatorDefault, chars, len, len, NULL);
-    return [str_chain_fast((NSMutableString *)str) autorelease];
+    if (IS_CHAINING(s)) {
+        CFMutableStringRef str = (CFMutableStringRef)s;
+        CFStringDelete(str, whole_range);
+        CFStringAppendCharacters(str, chars, len);
+        return (NSString *)str;
+    } else {
+        return (NSString *)CFStringCreateWithCharactersNoCopy(kCFAllocatorDefault, chars, len, kCFAllocatorMalloc);
+    }
 }
 
 NSString *str_splice(NSString *s, NSRange range, NSString *newstr)

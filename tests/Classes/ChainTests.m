@@ -109,15 +109,8 @@
 
 - (void)testReverse
 {
-    // *** IMPORTANT ***
-    // The assumption that a chained method returns the string at the same memory
-    // location as the input string does not hold for reverse. In order to implement
-    // it efficiently, we are forced to return a new string. For this reason it is
-    // recommended to always use the returned value even when chaining.
-    //GHAssertEquals(_chainedStr, [_chainedStr reverse], @"");
-
-    NSString *reversedString = [_chainedStr reverse];
-    GHAssertEquals(reversedString, [reversedString unchain], @"");
+    GHAssertEquals(_chainedStr, [_chainedStr reverse], @"");
+    GHAssertEquals(_chainedStr, [[_chainedStr reverse] unchain], @"");
 }
 
 - (void)testSplice

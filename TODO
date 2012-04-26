@@ -6,3 +6,6 @@
   - chop
   - split
   - count
+
+* reevaluate the importance of single-pointer invariant when chaining
+  (possibly more efficient implementation of reverse)
