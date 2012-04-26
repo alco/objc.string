@@ -56,6 +56,18 @@ NSString *str_insert(NSString *s, NSString *newstr, NSUInteger position)
     return str_splice(s, NSMakeRange(position, 0), newstr);
 }
 
+NSString *str_lowercase(NSString *s)
+{
+    if (IS_CHAINING(s)) {
+        CFMutableStringRef str = (CFMutableStringRef)s;
+        CFLocaleRef locale = CFLocaleCopyCurrent();
+        CFStringLowercase(str, locale);
+        CFRelease(locale);
+        return s;
+    }
+    return [s lowercaseString];
+}
+
 NSString *str_repeat(NSString *s, NSUInteger count, NSString *sep)
 {
     NSMutableString *str;
@@ -131,6 +143,18 @@ NSString *str_trim(NSString *s)
         return str;
     }
     return [s stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
+NSString *str_uppercase(NSString *s)
+{
+    if (IS_CHAINING(s)) {
+        CFMutableStringRef str = (CFMutableStringRef)s;
+        CFLocaleRef locale = CFLocaleCopyCurrent();
+        CFStringUppercase(str, locale);
+        CFRelease(locale);
+        return s;
+    }
+    return [s uppercaseString];
 }
 
 #pragma mark

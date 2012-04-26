@@ -70,6 +70,14 @@ NSString *str_expand_tabs(NSString *str, NSUInteger tabsize);
 NSString *str_insert(NSString *str, NSString *newstr, NSUInteger position);
 
 /*
+ * Convert the string to lower case.
+ * (chainable)
+ *
+ *     str_lowercase(@"HellO")  =>  @"hello"
+ */
+NSString *str_lowercase(NSString *str);
+
+/*
  * Repeat the string `count` times, inserting `sep` in-between. If `count` == 0,
  * returns an empty string.
  * (chainable)
@@ -139,6 +147,14 @@ NSString *str_rtrim(NSString *str);
  *     str_trim(@"\t\n  hello\r\v \b")  =>  @"hello"
  */
 NSString *str_trim(NSString *str);
+
+/*
+ * Convert the string to upper case.
+ * (chainable)
+ *
+ *     str_uppercase(@"HellO")  =>  @"HELLO"
+ */
+NSString *str_uppercase(NSString *str);
 
 /* ***
  * Chaining mechanism.
@@ -266,19 +282,6 @@ BOOL str_is_blank(NSString *str);
  */
 NSString *str_titlecase(NSString *str);
 
-/*
- * Convert the string to lower case. Synonym for [str lowercaseString].
- *
- *     str_lowercase(@"HellO")  =>  @"hello"
- */
-NSString *str_lowercase(NSString *str);
-
-/*
- * Convert the string to upper case. Synonym for [str uppercaseString].
- *
- *     str_uppercase(@"HellO")  =>  @"HELLO"
- */
-NSString *str_uppercase(NSString *str);
 
 /*
  * Swap the case of each letter in str.

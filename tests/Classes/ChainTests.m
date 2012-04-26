@@ -59,6 +59,12 @@
     GHAssertEquals(_chainedStr, [[_chainedStr insert:@"bca" at:3] unchain], @"");
 }
 
+- (void)testLowercase
+{
+    GHAssertEquals(_chainedStr, [_chainedStr lowercase], @"");
+    GHAssertEquals(_chainedStr, [[_chainedStr lowercase] unchain], @"");
+}
+
 - (void)testRepeat
 {
     GHAssertEquals(_chainedStr, [_chainedStr repeat:3], @"");
@@ -93,6 +99,12 @@
 {
     GHAssertEquals(_chainedStr, [_chainedStr trim], @"");
     GHAssertEquals(_chainedStr, [[_chainedStr trim] unchain], @"");
+}
+
+- (void)testUppercase
+{
+    GHAssertEquals(_chainedStr, [_chainedStr uppercase], @"");
+    GHAssertEquals(_chainedStr, [[_chainedStr uppercase] unchain], @"");
 }
 
 - (void)testComplexChain

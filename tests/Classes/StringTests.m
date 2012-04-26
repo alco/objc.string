@@ -63,6 +63,13 @@
     GHAssertThrows([@"foo" insert:@"" at:4], @"");
 }
 
+- (void)testLowercase
+{
+    GHAssertEqualStrings(@"hello world", [@"HELLO world" lowercase], @"");
+    GHAssertEqualStrings(@"добрый день", [@"Добрый День" lowercase], @"");
+    GHAssertEqualStrings(@"éspáñolêß", [@"ÉspÁÑolÊß" lowercase], @"");
+}
+
 - (void)testRepeat
 {
     GHAssertEqualStrings(@"", [@"foo" repeat:0], @"");
@@ -102,6 +109,13 @@
     GHAssertEqualStrings(@"foo \t\n\f\r  ", [@"  \r\f\n\t foo \t\n\f\r  " ltrim], @"");
     GHAssertEqualStrings(@"  \r\f\n\t foo", [@"  \r\f\n\t foo \t\n\f\r  " rtrim], @"");
     GHAssertEqualStrings(@"foo", [@"  \r\f\n\t foo \t\n\f\r  " trim], @"");
+}
+
+- (void)testUppercase
+{
+    GHAssertEqualStrings(@"HELLO WORLD", [@"HELLO world" uppercase], @"");
+    GHAssertEqualStrings(@"ДОБРЫЙ ДЕНЬ", [@"Добрый День" uppercase], @"");
+    GHAssertEqualStrings(@"ÉSPÁÑOLÊSS", [@"éspáñolêß" uppercase], @"");
 }
 
 #pragma mark -

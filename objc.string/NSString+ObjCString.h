@@ -19,6 +19,7 @@
 - (NSString *)expandTabs;  // -expandTabs:4
 - (NSString *)expandTabs:(NSUInteger)tabsize;
 - (NSString *)insert:(NSString *)str at:(NSUInteger)position;  // splice:NSMakeRange(position, 0) with:str
+- (NSString *)lowercase;
 - (NSString *)repeat:(NSUInteger)count;
 - (NSString *)repeat:(NSUInteger)count sep:(NSString *)separator;
 - (NSString *)replace:(NSString *)substr with:(NSString *)repl;
@@ -26,6 +27,7 @@
 - (NSString *)ltrim;
 - (NSString *)rtrim;
 - (NSString *)trim;
+- (NSString *)uppercase;
 
 /*
  * Chaining mechanism.

@@ -25,6 +25,9 @@
 - (NSString *)insert:(NSString *)str at:(NSUInteger)position {
     return str_insert(self, str, position);
 }
+- (NSString *)lowercase {
+    return str_lowercase(self);
+}
 - (NSString *)repeat:(NSUInteger)count {
     return str_repeat(self, count, @"");
 }
@@ -45,6 +48,9 @@
 }
 - (NSString *)trim {
     return str_trim(self);
+}
+- (NSString *)uppercase {
+    return str_uppercase(self);
 }
 
 #pragma mark -
