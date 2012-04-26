@@ -271,7 +271,21 @@ NSArray *str_chop(NSString *s, NSUInteger count)
 
 NSArray *str_split_space(NSString *s)
 {
-    return [s componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSRegularExpression *regex = (NSRegularExpression *)$regex(@"\\s+");
+    static const NSUInteger kAverageWordLength = 6;
+
+    __block NSUInteger position = 0;
+    NSMutableArray *components = [NSMutableArray arrayWithCapacity:[s length] / kAverageWordLength];
+    [regex enumerateMatchesInString:s options:0 range:WHOLE_RANGE(s) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+        NSRange subrange = NSMakeRange(position, result.range.location - position);
+        [components addObject:[s substringWithRange:subrange]];
+        position = result.range.location + result.range.length;
+    }];
+    if (position < [s length])
+        [components addObject:[s substringFromIndex:position]];
+    else
+        [components addObject:@""];
+    return components;
 }
 
 NSArray *str_split_lines(NSString *s)
