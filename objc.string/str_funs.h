@@ -44,6 +44,33 @@ NSString *str_capitalize(NSString *str);
 NSString *str_compress(NSString *str);
 
 /*
+ * Extract the substring defined by `range`.
+ * (chainable)
+ *
+ *     str_cut(@"one two three", NSMakeRange(4, 3))
+ *     =>  @"two"
+ */
+NSString *str_cut(NSString *str, NSRange range);
+
+/*
+ * Extract the substring starting from `position`. Effectively the same as
+ * str_delete(str, NSMakeRange(0, position)).
+ * (chainable)
+ *
+ *     str_cut_from(@"hello world", 6)  =>  @"world"
+ */
+NSString *str_cut_from(NSString *str, NSUInteger position);
+
+/*
+ * Extract the substring from the beginning up to `position`. Effectively the
+ * same as str_delete(str, NSMakeRange(position, length - position).
+ * (chainable)
+ *
+ *     str_cut_to(@"hello world", 5)  =>  @"hello"
+ */
+NSString *str_cut_to(NSString *str, NSUInteger position);
+
+/*
  * Same as str_splice(str, range, @"").
  * (chainable)
  *

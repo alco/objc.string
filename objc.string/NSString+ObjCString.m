@@ -13,6 +13,15 @@
 - (NSString *)compress {
     return str_compress(self);
 }
+- (NSString *)cut:(NSRange)range {
+    return str_cut(self, range);
+}
+- (NSString *)cutFrom:(NSUInteger)position {
+    return str_cut_from(self, position);
+}
+- (NSString *)cutTo:(NSUInteger)position {
+    return str_cut_to(self, position);
+}
 - (NSString *)delete:(NSRange)range {
     return str_delete(self, range);
 }

@@ -40,6 +40,37 @@ NSString *str_compress(NSString *s)
     return str_replace(s, $regex(@"\\s+"), @" ");
 }
 
+NSString *str_cut(NSString *s, NSRange range)
+{
+    if (IS_CHAINING(s)) {
+        NSMutableString *str = (NSMutableString *)s;
+        [str deleteCharactersInRange:NSMakeRange(0, range.location)];
+        [str deleteCharactersInRange:NSMakeRange(range.length, [s length] - range.length)];
+        return str;
+    }
+    return [s substringWithRange:range];
+}
+
+NSString *str_cut_from(NSString *s, NSUInteger position)
+{
+    if (IS_CHAINING(s)) {
+        NSMutableString *str = (NSMutableString *)s;
+        [str deleteCharactersInRange:NSMakeRange(0, position)];
+        return str;
+    }
+    return [s substringFromIndex:position];
+}
+
+NSString *str_cut_to(NSString *s, NSUInteger position)
+{
+    if (IS_CHAINING(s)) {
+        NSMutableString *str = (NSMutableString *)s;
+        [str deleteCharactersInRange:NSMakeRange(position, [s length] - position)];
+        return str;
+    }
+    return [s substringToIndex:position];
+}
+
 NSString *str_delete(NSString *s, NSRange range)
 {
     return str_splice(s, range, @"");

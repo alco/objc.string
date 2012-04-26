@@ -15,9 +15,9 @@
 - (NSString *)append:(NSString *)str;
 - (NSString *)capitalize;
 - (NSString *)compress;
-- (NSString *)cut:(NSRange)range;                   // <--
-- (NSString *)cutFrom:(NSUInteger)position;         // <--
-- (NSString *)cutTo:(NSUInteger)position;           // <--
+- (NSString *)cut:(NSRange)range;
+- (NSString *)cutFrom:(NSUInteger)position;
+- (NSString *)cutTo:(NSUInteger)position;
 - (NSString *)delete:(NSRange)range;
 - (NSString *)expandTabs;  // -expandTabs:4
 - (NSString *)expandTabs:(NSUInteger)tabsize;

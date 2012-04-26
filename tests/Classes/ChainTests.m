@@ -41,6 +41,24 @@
     GHAssertEquals(_chainedStr, [[_chainedStr compress] unchain], @"");
 }
 
+- (void)testCut
+{
+    GHAssertEquals(_chainedStr, [_chainedStr cut:NSMakeRange(0, 3)], @"");
+    GHAssertEquals(_chainedStr, [[_chainedStr cut:NSMakeRange(0, 3)] unchain], @"");
+}
+
+- (void)testCutFrom
+{
+    GHAssertEquals(_chainedStr, [_chainedStr cutFrom:3], @"");
+    GHAssertEquals(_chainedStr, [[_chainedStr cutFrom:3] unchain], @"");
+}
+
+- (void)testCutTo
+{
+    GHAssertEquals(_chainedStr, [_chainedStr cutTo:3], @"");
+    GHAssertEquals(_chainedStr, [[_chainedStr cutTo:3] unchain], @"");
+}
+
 - (void)testDelete
 {
     GHAssertEquals(_chainedStr, [_chainedStr delete:NSMakeRange(0, 3)], @"");

@@ -37,6 +37,26 @@
     GHAssertEqualStrings(@" foo bar ", [@"\t\f\rfoo     bar\n  \t " compress], @"");
 }
 
+- (void)testCut
+{
+    GHAssertEqualStrings(@"two", [@"one two three" cut:NSMakeRange(4, 3)], @"");
+    GHAssertEqualStrings(@"", [@"one two three" cut:NSMakeRange(4, 0)], @"");
+}
+
+- (void)testCutFrom
+{
+    GHAssertEqualStrings(@"one two three", [@"one two three" cutFrom:0], @"");
+    GHAssertEqualStrings(@"three", [@"one two three" cutFrom:8], @"");
+    GHAssertEqualStrings(@"", [@"one two three" cutFrom:13], @"");
+}
+
+- (void)testCutTo
+{
+    GHAssertEqualStrings(@"", [@"one two three" cutTo:0], @"");
+    GHAssertEqualStrings(@"one", [@"one two three" cutTo:3], @"");
+    GHAssertEqualStrings(@"one two three", [@"one two three" cutTo:13], @"");
+}
+
 - (void)testDelete
 {
     GHAssertEqualStrings(@"foo", [@"foobar" delete:NSMakeRange(3, 3)], @"");
