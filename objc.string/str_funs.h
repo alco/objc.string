@@ -11,7 +11,7 @@
  * 1. Whitespace.
  *
  * Whitespace is defined by NSRegularExpression as [ \t\n\f\r\p{Z}] where \p{Z}
- * is defined as "any kind of whitespace or invisible separator".
+ * is a Unicode definition of "any kind of whitespace or invisible separator".
  */
 
 /* ***
