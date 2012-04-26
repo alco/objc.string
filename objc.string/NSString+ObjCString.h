@@ -21,8 +21,8 @@
 - (NSString *)delete:(NSRange)range;
 - (NSString *)expandTabs;  // -expandTabs:4
 - (NSString *)expandTabs:(NSUInteger)tabsize;
-- (NSString *)filter:(NSString *)str;               // <--
-- (NSString *)filterChars:(NSCharacterSet *)chars;  // <--
+- (NSString *)filter:(NSString *)str;
+- (NSString *)filterChars:(NSCharacterSet *)chars;
 - (NSString *)insert:(NSString *)str at:(NSUInteger)position;
 - (NSString *)lowercase;
 - (NSString *)pad:(NSUInteger)length;

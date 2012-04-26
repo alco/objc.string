@@ -31,6 +31,12 @@
 - (NSString *)expandTabs:(NSUInteger)tabsize {
     return str_expand_tabs(self, tabsize);
 }
+- (NSString *)filter:(NSString *)str {
+    return str_filter(self, str);
+}
+- (NSString *)filterChars:(NSCharacterSet *)chars {
+    return str_filter_chars(self, chars);
+}
 - (NSString *)insert:(NSString *)str at:(NSUInteger)position {
     return str_insert(self, str, position);
 }

@@ -82,6 +82,37 @@ NSString *str_expand_tabs(NSString *s, NSUInteger tabsize)
     return str_replace(s, @"\t", tab_str);
 }
 
+NSString *str_filter(NSString *s, NSString *charstr)
+{
+    return str_filter_chars(s, [NSCharacterSet characterSetWithCharactersInString:charstr]);
+}
+
+NSString *str_filter_chars(NSString *s, NSCharacterSet *chars)
+{
+    NSMutableString *str;
+    if (IS_CHAINING(s)) {
+        str = (NSMutableString *)s;
+    } else {
+        str = [NSMutableString stringWithString:s];
+    }
+
+    // This is a fast way to get access to string characters
+    CFStringInlineBuffer buf;
+    CFRange whole_range = { 0, [str length] };
+    CFStringInitInlineBuffer((CFStringRef)str, &buf, whole_range);
+
+    NSUInteger len = [str length], offset = 0;
+    for (NSUInteger index = 0; index < len; ++index) {
+        unichar c = (unichar)CFStringGetCharacterFromInlineBuffer(&buf, index);
+        if ([chars characterIsMember:c]) {
+            [str deleteCharactersInRange:NSMakeRange(index - offset, 1)];
+            ++offset;
+        }
+    }
+
+    return str;
+}
+
 NSString *str_insert(NSString *s, NSString *newstr, NSUInteger position)
 {
     return str_splice(s, NSMakeRange(position, 0), newstr);

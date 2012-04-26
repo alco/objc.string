@@ -73,6 +73,12 @@
     GHAssertEqualStrings(@"foo bar", [@"\tfoo \tbar" expandTabs:0], @"");
 }
 
+- (void)testFilter
+{
+    GHAssertEqualStrings(@"thousand", [@"3 thousand" filter:@" 1234567890"], @"");
+    GHAssertEqualStrings(@" ", [@"3 thousand" filterChars:[NSCharacterSet alphanumericCharacterSet]], @"");
+}
+
 - (void)testInsert
 {
     GHAssertEqualStrings(@"foobar", [@"foo" insert:@"bar" at:3], @"");

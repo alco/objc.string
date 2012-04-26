@@ -71,6 +71,18 @@
     GHAssertEquals(_chainedStr, [[_chainedStr expandTabs] unchain], @"");
 }
 
+- (void)testFilter
+{
+    GHAssertEquals(_chainedStr, [_chainedStr filter:@"abc"], @"");
+    GHAssertEquals(_chainedStr, [[_chainedStr filter:@"abc"] unchain], @"");
+}
+
+- (void)testFilterChars
+{
+    GHAssertEquals(_chainedStr, [_chainedStr filterChars:[NSCharacterSet newlineCharacterSet]], @"");
+    GHAssertEquals(_chainedStr, [[_chainedStr filterChars:[NSCharacterSet whitespaceCharacterSet]] unchain], @"");
+}
+
 - (void)testInsert
 {
     GHAssertEquals(_chainedStr, [_chainedStr insert:@"abc" at:0], @"");

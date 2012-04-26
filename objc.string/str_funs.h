@@ -88,6 +88,23 @@ NSString *str_delete(NSString *str, NSRange range);
 NSString *str_expand_tabs(NSString *str, NSUInteger tabsize);
 
 /*
+ * Remove the characters in `charstr` from `str`.
+ * (chainable)
+ *
+ *     str_filter(@"3 thousand", @" 1234567890")  =>  @"thousand"
+ */
+NSString *str_filter(NSString *str, NSString *charstr);
+
+/*
+ * Remove the characters in `chars` from `str`.
+ * (chainable)
+ *
+ *     str_filter_chars(@"3 thousand", [NSCharacterSet alphanumericCharacterSet])
+ *     =>  @" "
+ */
+NSString *str_filter_chars(NSString *str, NSCharacterSet *chars);
+
+/*
  * Same as str_splice(str, NSMakeRange(position, 0), newstr).
  * (chainable)
  *
