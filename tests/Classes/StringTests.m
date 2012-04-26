@@ -34,7 +34,8 @@
 
 - (void)testCompress
 {
-    GHAssertEqualStrings(@" foo bar ", [@"\t\f\rfoo     bar\n  \t " compress], @"");
+    // This line contains two Japanese spaces after the dot
+    GHAssertEqualStrings(@" foo bar . ", [@"\t\f\rfoo     bar\n  \t.　　" compress], @"");
 }
 
 - (void)testCut
