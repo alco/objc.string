@@ -68,6 +68,7 @@
     GHAssertEqualStrings(@"hello world", [@"HELLO world" lowercase], @"");
     GHAssertEqualStrings(@"добрый день", [@"Добрый День" lowercase], @"");
     GHAssertEqualStrings(@"éspáñolêß", [@"ÉspÁÑolÊß" lowercase], @"");
+    GHAssertEqualStrings(@"日本語　にほんご", [@"日本語　にほんご" lowercase], @"");
 }
 
 - (void)testRepeat
@@ -116,6 +117,7 @@
     GHAssertEqualStrings(@"HELLO WORLD", [@"HELLO world" uppercase], @"");
     GHAssertEqualStrings(@"ДОБРЫЙ ДЕНЬ", [@"Добрый День" uppercase], @"");
     GHAssertEqualStrings(@"ÉSPÁÑOLÊSS", [@"éspáñolêß" uppercase], @"");
+    GHAssertEqualStrings(@"日本語　にほんご", [@"日本語　にほんご" uppercase], @"");
 }
 
 #pragma mark -
