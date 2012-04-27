@@ -36,11 +36,11 @@ This is an early development version. I'd love to hear your feedback and suggest
 
 It's important to note, that **objc.string** does not replace the standard methods of `NSString`, it complements them. Some of the methods have been overloaded to provide support for the chaining mechanism (described below). Here's what the library does do:
 
-* provides a comprehensive and consistent API
+* provides a powerful and consistent API
 * the same API is used to deal with plain strings as well as regular expressions
 * embraces functional approach (treats both `NSString` and `NSMutableString` as immutable)
 * (while still providing a way to modify strings "in place")
-* contains a complete set of unit tests and benchmarks
+* comes with a comprehensive set of unit tests and benchmarks
 
 
 ## Core Concepts ##
@@ -49,7 +49,7 @@ It's important to note, that **objc.string** does not replace the standard metho
 
 * All functions adhere to functional style: they return a new object, leaving the original string untouched.
 
-* Most of the functions can be chained to efficiently perform multiple string operations without redundant allocations.
+* Most of the functions can be chained to efficiently perform multiple string operations in one sequence avoiding unnecessary memory allocations.
 
 Consider the following example:
 
@@ -63,23 +63,23 @@ newStr = [newStr replace:@" " with:@", "];        // => @"Apple, orange, donut"
 newStr = [newStr append:@"."];                    // => @"Apple, orange, donut."
 ```
 
-This code produces four intermediate strings that get thrown away. Of course, there is `NSMutableString`, but Apple decided it does not need that many methods at all, so we Objective-C developers are pretty much screwed when it comes to manipulating string in an efficient manner.
+This code produces four intermediate strings that get thrown away. Of course, there is `NSMutableString`, but Apple decided it does not need that many methods at all, so we Cocoa developers are pretty much screwed when it comes to manipulating strings in an efficient manner. The CoreFoundation counterparts of `NSString` and `NSMutableString` (with `CFString...` functions) provide a richer set of functionality than what is available in Foundation.
 
-**objc.string** does not provide a parallel set of functions that operate on instances of `NSMutableString`. Instead, it provides an ability to use the same functions to modify the input string in-place. This is achieved by using the `chain`/`unchain` methods:
+**objc.string** bridges the two together by providing a uniform API and hiding all of the underlying implementation details. It _does not_ provide two sets of similar functions to support `NSString` and `NSMutableString`. Instead, it provides the ability to use the same functions that manipulate both, either purely (returning a new string) or in a more optimized way (sometimes modifying the string "in place"). This is achieved by using the `chain`/`unchain` methods:
 
 ```objc
 NSString *testStr = @"\tapple orange plum \n";
 
 NSString *newStr = [testStr chain];
-[newStr trim];                           // => @"apple orange plum"
-[newStr replace:@"plum" with:@"donut"];  // => @"apple orange donut"
-[newStr capitalize];                     // => @"Apple orange donut"
-[newStr replace:@" " with:@", "];        // => @"Apple, orange, donut"
-[newStr append:@"."];                    // => @"Apple, orange, donut."
-[newStr unchain];
+newStr = [newStr trim];                           // => @"apple orange plum"
+newStr = [newStr replace:@"plum" with:@"donut"];  // => @"apple orange donut"
+newStr = [newStr capitalize];                     // => @"Apple orange donut"
+newStr = [newStr replace:@" " with:@", "];        // => @"Apple, orange, donut"
+newStr = [newStr append:@"."];                    // => @"Apple, orange, donut."
+newStr = [newStr unchain];
 ```
 
-A new string is allocated when the `chain` method is called. All successive method calls change `newStr` without allocating new strings. Note that the code has been formatted on multiple lines only for clarity. All of the following examples produce the same string in the end:
+A new string is allocated when the `chain` method is called. Successive method calls now know that `newStr` can be changed "in place" if needed (it's not always the case though), without allocating new strings. Note that the code has been formatted on multiple lines only for clarity. All of the following examples produce the same result in the end:
 
 ```objc
 NSString *testStr = @"\tapple orange plum \n";
@@ -89,30 +89,33 @@ NSString *testStr = @"\tapple orange plum \n";
 NSString *aStr =
     [[[[[testStr trim] replace:@"plum" with:@"donut"] capitalize] replace:@" " with:@", "] append:@"."];
 
-// One new string is allocated. This is more efficient.
+// This is more efficient.
 NSString *anotherStr = [testStr chain];
-[[[testStr trim] replace:@"plum" with:@"donut"] capitalize];
-// Return values can be ignored while chaining. Each method simply returns a
-// pointer to the same input string.
-[testStr replace:@" " with:@", "];
-[testStr append:@"."];
-[testStr unchain];
+anotherStr = [[[testStr trim] replace:@"plum" with:@"donut"] capitalize];
+anotherStr = [anotherStr replace:@" " with:@", "];
+anotherStr = [anotherStr append:@"."];
+[anotherStr unchain];
 
 // Same as the previous one, but automatically calls `unchain` behind the scenes.
 // This is the recommended way to combine multiple string operations.
 NSString *yetAnotherStr = [testStr chain:^(NSString *str) {
-    [[[[[str trim] replace:@"plum" with:@"donut"] capitalize] replace:@" " with:@", "]append:@"."];
+    [[[[[str trim] replace:@"plum" with:@"donut"] capitalize] replace:@" " with:@", "] append:@"."];
 }];
 
-// If you already have an instance of NSMutableString, you can avoid allocations altogether.
+// If you already have an instance of NSMutableString, you can avoid the initial allocation altogether.
+// Note that in this case mstr should be autoreleased prior to being passed to the chain_fast method.
+// Read the explanation below for more details.
 NSMutableString *mstr = ...;
 [mstr chain_fast:^(NSMutableString *str) {
     ...
 }];
 ```
 
-Another nice feature of **objc.string** is that it provides support for multiple workflows. The basic functionality is implemented as a set of functions in the _str_funs.m_ file. Categories are also provided for `NSString` and `NSMutableString`. If you like the category approach, add the _objc.string_ directory to your project and include the _NSString+ObjCStringAdditions.h_ file where you want to use it. If you're not a fan of categories, add only _str_funs.h_ and _str_funs.m_ to your project and use plain functions.
+A few things to remember:
 
+* While modifying a string "in place" is often more efficient than creating a new one, it is not always the case. As a consequence, you should never discard the return value of any of the functions in the present library. Failing to do so might cause unexpected results. A scrupulous reader may have noticed that the return value of `[anotherStr unchain]` in the code above is discarded. The `unchain` method is the only exception to this rule, i.e. it is guaranteed to return a pointer to the same string it receives as input.
+
+* The `chain` method returns an autoreleased string which should not be explicitly retained or released until it is `unchain`ed. If one of the functions decides to discard the input string and return a new one, it would cause a memory leak in the case when the input string has been retained by the caller. In other words, please don't let a chained string escape the scope it was defined in. This means that for each call to `chain` (or `chain_fast`) there should be a corresponding call to `unchain` in the same function scope. When using `chain:` and `chain_fast:` with a block argument, this invariant is kept for you automatically, so you don't need to call `unchain` yourself.
 
 ## Documentation ##
 
