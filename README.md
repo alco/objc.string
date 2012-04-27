@@ -14,7 +14,7 @@ There are quite a few so called toolkits for Objective-C released by various com
 
 * They don't have a clear purpose other than "this is a collection of functionality we find useful; hopefully you will benefit from it too". You will agree that we all dislike unnecessary dependencies and dependencies that we don't fully understand or use to their full potential.
 
-In contrast with those general purpose toolkits, the goal of **objc.string** is to provide a comprehensive set of string manipulation routines in a small, self-contained library with zero dependencies (there are some, but for your own good; they are described in the _Configuration_ section below). It does one thing and does it well. What it does not do:
+In contrast with those general purpose toolkits, the goal of **objc.string** is to provide a comprehensive set of string manipulation routines in a small, self-contained library with zero dependencies (there are some, but for your own good; they are described in the _Configuration_ section below). It does one thing and does it well. What it _does not_ do:
 
 * networking
 * hashing
@@ -34,7 +34,7 @@ This is an early development version. I'd love to hear your feedback and suggest
 
 ## Features ##
 
-It's important to note, that **objc.string** does not replace the standard methods of `NSString`, it complements them. Some of the methods have been overloaded to provide support for the chaining mechanism (described below). Here's what the library does do:
+It's important to note, that **objc.string** does not replace the standard methods of `NSString` but complements them. Some of the methods have been overloaded to provide support for the chaining mechanism (described below). Here's what the library does do:
 
 * provides a powerful and consistent API
 * the same API is used to deal with plain strings as well as regular expressions
