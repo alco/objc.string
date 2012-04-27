@@ -1,5 +1,5 @@
 #import "NSString+ObjCString.h"
-#import "str_funs.h"
+#import "str_primitives.h"
 
 
 @implementation NSString(ObjectiveString)

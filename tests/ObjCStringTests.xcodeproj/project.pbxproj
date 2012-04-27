@@ -14,8 +14,8 @@
 		6E0721F11548106C00D4F296 /* StringTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0721F01548106C00D4F296 /* StringTests.m */; };
 		6E0722011548127400D4F296 /* NSMutableString+ObjCString.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0721FC1548127400D4F296 /* NSMutableString+ObjCString.m */; };
 		6E0722021548127400D4F296 /* NSString+ObjCString.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0721FE1548127400D4F296 /* NSString+ObjCString.m */; };
-		6E0722031548127400D4F296 /* str_funs.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0722001548127400D4F296 /* str_funs.m */; };
 		6E0722071548136E00D4F296 /* ChainTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0722061548136E00D4F296 /* ChainTests.m */; };
+		6E0D2DF4154AD1F500A6511B /* str_primitives.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0D2DF3154AD1F500A6511B /* str_primitives.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -45,9 +45,9 @@
 		6E0721FC1548127400D4F296 /* NSMutableString+ObjCString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+ObjCString.m"; sourceTree = "<group>"; };
 		6E0721FD1548127400D4F296 /* NSString+ObjCString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ObjCString.h"; sourceTree = "<group>"; };
 		6E0721FE1548127400D4F296 /* NSString+ObjCString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ObjCString.m"; sourceTree = "<group>"; };
-		6E0721FF1548127400D4F296 /* str_funs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = str_funs.h; sourceTree = "<group>"; };
-		6E0722001548127400D4F296 /* str_funs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = str_funs.m; sourceTree = "<group>"; };
 		6E0722061548136E00D4F296 /* ChainTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChainTests.m; sourceTree = "<group>"; };
+		6E0D2DF2154AD1F500A6511B /* str_primitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = str_primitives.h; sourceTree = "<group>"; };
+		6E0D2DF3154AD1F500A6511B /* str_primitives.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = str_primitives.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,8 +127,8 @@
 				6E0721FC1548127400D4F296 /* NSMutableString+ObjCString.m */,
 				6E0721FD1548127400D4F296 /* NSString+ObjCString.h */,
 				6E0721FE1548127400D4F296 /* NSString+ObjCString.m */,
-				6E0721FF1548127400D4F296 /* str_funs.h */,
-				6E0722001548127400D4F296 /* str_funs.m */,
+				6E0D2DF2154AD1F500A6511B /* str_primitives.h */,
+				6E0D2DF3154AD1F500A6511B /* str_primitives.m */,
 			);
 			name = objc.string;
 			path = ../objc.string;
@@ -199,8 +199,8 @@
 				6E0721F11548106C00D4F296 /* StringTests.m in Sources */,
 				6E0722011548127400D4F296 /* NSMutableString+ObjCString.m in Sources */,
 				6E0722021548127400D4F296 /* NSString+ObjCString.m in Sources */,
-				6E0722031548127400D4F296 /* str_funs.m in Sources */,
 				6E0722071548136E00D4F296 /* ChainTests.m in Sources */,
+				6E0D2DF4154AD1F500A6511B /* str_primitives.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

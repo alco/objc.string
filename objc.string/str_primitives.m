@@ -1,4 +1,4 @@
-#import "str_funs.h"
+#import "str_primitives.h"
 #import <objc/runtime.h>
 
 
