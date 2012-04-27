@@ -3,37 +3,63 @@
 
 @interface NSString(ObjCString)
 
-/* ***
- * For a description of each method see str_funs.h.
- * ***
- */
-
 /*
- * The methods below are all chainable.
+ * The core string methods. All are chainable.
  */
-
-typedef enum {
-    kTruncateLeft,
-    kTruncateMiddle,
-    kTruncateRight
-} TruncateFlag;
 
 - (NSString *)append:(NSString *)str;
 - (NSString *)capitalize;
+
+/*
+ * Center `str` in a string of length `width`. Use `ch` as a filling character.
+ * (chainable)
+ *
+ *     str_center(@"hello", 10, @" ")  =>  @"   hello  "
+ */
 - (NSString *)center:(NSUInteger)width;
 - (NSString *)center:(NSUInteger)width with:(NSString *)character;
 - (NSString *)compress;
 - (NSString *)cut:(NSRange)range;
 - (NSString *)cutFrom:(NSUInteger)position;
 - (NSString *)cutTo:(NSUInteger)position;
+
+/*
+ * Same as str_splice(str, range, @"").
+ * (chainable)
+ *
+ *     str_delete(@"foobar", NSMakeRange(3, 3))
+ *     => @"foo"
+ */
 - (NSString *)delete:(NSRange)range;
 - (NSString *)expandTabs;  // -expandTabs:4
 - (NSString *)expandTabs:(NSUInteger)tabsize;
 - (NSString *)filter:(NSString *)str;
 - (NSString *)filterChars:(NSCharacterSet *)chars;
+
+/*
+ * Same as str_splice(str, NSMakeRange(position, 0), newstr).
+ * (chainable)
+ *
+ *     str_insert(@"foo", @"bar", 2)
+ *     => @"fobaro"
+ */
 - (NSString *)insert:(NSString *)str at:(NSUInteger)position;
+
+/*
+ * Left-justify `str` in a string of length `width` using `ch` as a filling character.
+ * (chainable)
+ *
+ *     str_ljust(@"hello", 10, @"-")  =>  @"hello-----"
+ */
 - (NSString *)ljust:(NSUInteger)width;
 - (NSString *)ljust:(NSUInteger)width with:(NSString *)character;
+
+/*
+ * Right-justify `str` in a string of length `width` using `ch` as a filling character.
+ * (chainable)
+ *
+ *     str_rjust(@"hello", 10, @"-")  =>  @"-----hello"
+ */
 - (NSString *)rjust:(NSUInteger)width;
 - (NSString *)rjust:(NSUInteger)width with:(NSString *)character;
 - (NSString *)lowercase;
@@ -46,12 +72,13 @@ typedef enum {
 - (NSString *)ltrim;
 - (NSString *)rtrim;
 - (NSString *)trim;
-- (NSString *)truncate:(NSUInteger)length;  // truncate:length at:kTruncateRight
-- (NSString *)truncate:(NSUInteger)length at:(TruncateFlag)flag;
+- (NSString *)ltruncate:(NSUInteger)length;
+- (NSString *)rtruncate:(NSUInteger)length;
+- (NSString *)truncate:(NSUInteger)length;  // truncates in the middle
 - (NSString *)uppercase;
 
 /*
- * Chaining mechanism.
+ * The chaining mechanism.
  */
 
 - (NSString *)chain;

@@ -137,6 +137,12 @@
     GHAssertEquals(_chainedStr, [[_chainedStr splice:NSMakeRange(0, 3) with:@"bye"] unchain], @"");
 }
 
+- (void)testTitlecase
+{
+    GHAssertEquals(_chainedStr, [_chainedStr titlecase], @"");
+    GHAssertEquals(_chainedStr, [[_chainedStr titlecase] unchain], @"");
+}
+
 - (void)testLtrim
 {
     GHAssertEquals(_chainedStr, [_chainedStr ltrim], @"");
@@ -149,12 +155,6 @@
     GHAssertEquals(_chainedStr, [[_chainedStr rtrim] unchain], @"");
 }
 
-- (void)testTitlecase
-{
-    GHAssertEquals(_chainedStr, [_chainedStr titlecase], @"");
-    GHAssertEquals(_chainedStr, [[_chainedStr titlecase] unchain], @"");
-}
-
 - (void)testTrim
 {
     GHAssertEquals(_chainedStr, [_chainedStr trim], @"");
@@ -164,7 +164,7 @@
 - (void)testTruncate
 {
     GHAssertEquals(_chainedStr, [_chainedStr truncate:5], @"");
-    GHAssertEquals(_chainedStr, [[_chainedStr truncate:5 at:kTruncateLeft] unchain], @"");
+    GHAssertEquals(_chainedStr, [[_chainedStr truncate:5] unchain], @"");
 }
 
 - (void)testUppercase

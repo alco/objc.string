@@ -11,10 +11,10 @@
     return str_capitalize(self);
 }
 - (NSString *)center:(NSUInteger)width {
-    return str_center(self, width, @" ");
+    return str_fill(self, width, @" ", kObjCStringMiddle);
 }
 - (NSString *)center:(NSUInteger)width with:(NSString *)character {
-    return str_center(self, width, character);
+    return str_fill(self, width, character, kObjCStringMiddle);
 }
 - (NSString *)compress {
     return str_compress(self);
@@ -29,7 +29,7 @@
     return str_cut_to(self, position);
 }
 - (NSString *)delete:(NSRange)range {
-    return str_delete(self, range);
+    return str_splice(self, range, @"");
 }
 - (NSString *)expandTabs {
     return str_expand_tabs(self, 4);
@@ -38,25 +38,25 @@
     return str_expand_tabs(self, tabsize);
 }
 - (NSString *)filter:(NSString *)str {
-    return str_filter(self, str);
+    return str_filter_chars(self, [NSCharacterSet characterSetWithCharactersInString:str]);
 }
 - (NSString *)filterChars:(NSCharacterSet *)chars {
     return str_filter_chars(self, chars);
 }
 - (NSString *)insert:(NSString *)str at:(NSUInteger)position {
-    return str_insert(self, str, position);
+    return str_splice(self, NSMakeRange(position, 0), str);
 }
 - (NSString *)ljust:(NSUInteger)width {
-    return str_ljust(self, width, @" ");
+    return str_fill(self, width, @" ", kObjCStringLeft);
 }
 - (NSString *)ljust:(NSUInteger)width with:(NSString *)character {
-    return str_ljust(self, width, character);
+    return str_fill(self, width, character, kObjCStringLeft);
 }
 - (NSString *)rjust:(NSUInteger)width {
-    return str_rjust(self, width, @" ");
+    return str_fill(self, width, @" ", kObjCStringRight);
 }
 - (NSString *)rjust:(NSUInteger)width with:(NSString *)character {
-    return str_rjust(self, width, character);
+    return str_fill(self, width, character, kObjCStringRight);
 }
 - (NSString *)lowercase {
     return str_lowercase(self);
@@ -88,11 +88,14 @@
 - (NSString *)trim {
     return str_trim(self);
 }
-- (NSString *)truncate:(NSUInteger)length {
-    return str_truncate(self, length, kTruncateRight);
+- (NSString *)ltruncate:(NSUInteger)length {
+    return str_truncate(self, length, kObjCStringLeft);
 }
-- (NSString *)truncate:(NSUInteger)length at:(TruncateFlag)flag {
-    return str_truncate(self, length, flag);
+- (NSString *)rtruncate:(NSUInteger)length {
+    return str_truncate(self, length, kObjCStringRight);
+}
+- (NSString *)truncate:(NSUInteger)length {
+    return str_truncate(self, length, kObjCStringMiddle);
 }
 - (NSString *)uppercase {
     return str_uppercase(self);

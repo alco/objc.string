@@ -5,6 +5,12 @@
                                                                                options:0       \
                                                                                  error:NULL])
 
+typedef enum {
+    kObjCStringLeft,
+    kObjCStringMiddle,
+    kObjCStringRight,
+} kObjcStringLocation;
+
 
 /*
  * *** General notes ***
@@ -35,14 +41,6 @@ NSString *str_append(NSString *s1, NSString *s2);
  *     str_capitalize(@"one two")  =>  @"One two"
  */
 NSString *str_capitalize(NSString *str);
-
-/*
- * Center `str` in a string of length `width`. Use `ch` as a filling character.
- * (chainable)
- *
- *     str_center(@"hello", 10, @" ")  =>  @"   hello  "
- */
-NSString *str_center(NSString *str, NSUInteger width, NSString *ch);
 
 /*
  * Compress adjacent whitespace into one space.
@@ -80,15 +78,6 @@ NSString *str_cut_from(NSString *str, NSUInteger position);
 NSString *str_cut_to(NSString *str, NSUInteger position);
 
 /*
- * Same as str_splice(str, range, @"").
- * (chainable)
- *
- *     str_delete(@"foobar", NSMakeRange(3, 3))
- *     => @"foo"
- */
-NSString *str_delete(NSString *str, NSRange range);
-
-/*
  * Replace tabs with `tabsize` number of spaces in `str`.
  * (chainable)
  *
@@ -110,14 +99,6 @@ NSString *str_expand_tabs(NSString *str, NSUInteger tabsize);
 NSString *str_fill(NSString *str, NSUInteger width, NSString *ch, int flag);
 
 /*
- * Remove the characters in `charstr` from `str`.
- * (chainable)
- *
- *     str_filter(@"3 thousand", @" 1234567890")  =>  @"thousand"
- */
-NSString *str_filter(NSString *str, NSString *charstr);
-
-/*
  * Remove the characters in `chars` from `str`.
  * (chainable)
  *
@@ -125,31 +106,6 @@ NSString *str_filter(NSString *str, NSString *charstr);
  *     =>  @" "
  */
 NSString *str_filter_chars(NSString *str, NSCharacterSet *chars);
-
-/*
- * Same as str_splice(str, NSMakeRange(position, 0), newstr).
- * (chainable)
- *
- *     str_insert(@"foo", @"bar", 2)
- *     => @"fobaro"
- */
-NSString *str_insert(NSString *str, NSString *newstr, NSUInteger position);
-
-/*
- * Left-justify `str` in a string of length `width` using `ch` as a filling character.
- * (chainable)
- *
- *     str_ljust(@"hello", 10, @"-")  =>  @"hello-----"
- */
-NSString *str_ljust(NSString *str, NSUInteger width, NSString *ch);
-
-/*
- * Right-justify `str` in a string of length `width` using `ch` as a filling character.
- * (chainable)
- *
- *     str_ljust(@"hello", 10, @"-")  =>  @"-----hello"
- */
-NSString *str_rjust(NSString *str, NSUInteger width, NSString *ch);
 
 /*
  * Convert the string to lower case.
@@ -252,13 +208,13 @@ NSString *str_trim(NSString *str);
  * by an ellipsis (...). The resulting string's length <= `length`.
  * (chainable)
  *
- *     str_truncate(@"hello world", 10, kTruncateRight)
+ *     str_truncate(@"hello world", 10, kObjCStringRight)
  *     => @"hello w..."
  *
- *     str_truncate(@"hello world", 10, kTruncateMiddle)
+ *     str_truncate(@"hello world", 10, kObjCStringMiddle)
  *     => @"hell...rld"
  *
- *     str_truncate(@"hello world", 11, kTruncateMiddle)
+ *     str_truncate(@"hello world", 11, kObjCStringMiddle)
  *     => @"hello world"
  */
 NSString *str_truncate(NSString *str, NSUInteger length, int flag);

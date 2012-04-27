@@ -35,11 +35,6 @@ NSString *str_capitalize(NSString *s)
     return str;
 }
 
-NSString *str_center(NSString *s, NSUInteger width, NSString *ch)
-{
-    return str_fill(s, width, ch, 1);
-}
-
 NSString *str_compress(NSString *s)
 {
     return str_replace(s, $regex(@"\\s+"), @" ");
@@ -76,11 +71,6 @@ NSString *str_cut_to(NSString *s, NSUInteger position)
     return [s substringToIndex:position];
 }
 
-NSString *str_delete(NSString *s, NSRange range)
-{
-    return str_splice(s, range, @"");
-}
-
 NSString *str_expand_tabs(NSString *s, NSUInteger tabsize)
 {
     NSString *tab_str = str_repeat(@" ", tabsize, @"");
@@ -103,15 +93,15 @@ NSString *str_fill(NSString *s, NSUInteger width, NSString *ch, int flag)
     NSUInteger position = 0;
 
     switch (flag) {
-    case 0:    // left
+    case kObjCStringLeft:
         position = len;
         // fall-through
-    case 2: {  // right
+    case kObjCStringRight: {
         NSString *filling = str_repeat(ch, width - len, @"");
         [str insertString:filling atIndex:position];
     } break;
 
-    case 1: {  // middle
+    case kObjCStringMiddle: {
         NSUInteger filling_width = width - len;
         if ((filling_width & 1) == 0) {  // filling_width is even
             NSUInteger half_width = filling_width / 2;
@@ -133,11 +123,6 @@ NSString *str_fill(NSString *s, NSUInteger width, NSString *ch, int flag)
     }
 
     return str;
-}
-
-NSString *str_filter(NSString *s, NSString *charstr)
-{
-    return str_filter_chars(s, [NSCharacterSet characterSetWithCharactersInString:charstr]);
 }
 
 NSString *str_filter_chars(NSString *s, NSCharacterSet *chars)
@@ -164,21 +149,6 @@ NSString *str_filter_chars(NSString *s, NSCharacterSet *chars)
     }
 
     return str;
-}
-
-NSString *str_insert(NSString *s, NSString *newstr, NSUInteger position)
-{
-    return str_splice(s, NSMakeRange(position, 0), newstr);
-}
-
-NSString *str_ljust(NSString *s, NSUInteger width, NSString *ch)
-{
-    return str_fill(s, width, ch, 0);
-}
-
-NSString *str_rjust(NSString *s, NSUInteger width, NSString *ch)
-{
-    return str_fill(s, width, ch, 2);
 }
 
 NSString *str_lowercase(NSString *s)
@@ -335,15 +305,15 @@ NSString *str_truncate(NSString *s, NSUInteger length, int flag)
     NSUInteger len_diff = len - length;
     NSUInteger rm_len = 3 + len_diff;
     switch (flag) {
-    case 0:  // left
+    case kObjCStringLeft:
         [str replaceCharactersInRange:NSMakeRange(0, rm_len) withString:@"..."];
         break;
 
-    case 1:  // middle
+    case kObjCStringMiddle:
         [str replaceCharactersInRange:NSMakeRange(length/2 - 1, rm_len) withString:@"..."];
         break;
 
-    case 2:  // right
+    case kObjCStringRight:
         [str replaceCharactersInRange:NSMakeRange(length - 3, rm_len) withString:@"..."];
         break;
 

@@ -119,7 +119,7 @@ A few things to remember:
 
 ## Documentation ##
 
-Documentation is not yet available. See the list of available functions in the _str_funs.h_ file.
+Documentation is not yet available. See the list of available methods in the _NSString+ObjCString.h_ file. The _NSMutableString+ObjCString.h_ file provides declarations for the `chain_fast` and `chain_fast:` methods.
 
 
 ## Running Tests ##

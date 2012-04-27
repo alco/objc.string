@@ -180,14 +180,14 @@
 - (void)testTruncate
 {
     GHAssertEqualStrings(@"hello world", [@"hello world" truncate:11], @"");
-    GHAssertEqualStrings(@"...", [@"hello world" truncate:3], @"");
+    GHAssertEqualStrings(@"...", [@"hello world" rtruncate:3], @"");
 //    GHAssertEqualStrings(@"...", [@"hello world" truncate:2], @"");
 //    GHAssertEqualStrings(@"...", [@"hello world" truncate:1], @"");
 //    GHAssertEqualStrings(@"...", [@"hello world" truncate:0], @"");
-    GHAssertEqualStrings(@"hello w...", [@"hello world" truncate:10], @"");
-    GHAssertEqualStrings(@"... world", [@"hello world" truncate:9 at:kTruncateLeft], @"");
-    GHAssertEqualStrings(@"hell...rld", [@"hello world" truncate:10 at:kTruncateMiddle], @"");
-    GHAssertEqualStrings(@"hell...rldy", [@"hello worldy" truncate:11 at:kTruncateMiddle], @"");
+    GHAssertEqualStrings(@"hello w...", [@"hello world" rtruncate:10], @"");
+    GHAssertEqualStrings(@"... world", [@"hello world" ltruncate:9], @"");
+    GHAssertEqualStrings(@"hell...rld", [@"hello world" truncate:10], @"");
+    GHAssertEqualStrings(@"hell...rldy", [@"hello worldy" truncate:11], @"");
 }
 
 - (void)testUppercase
