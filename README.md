@@ -26,7 +26,7 @@ In contrast with those general purpose toolkits, the goal of **objc.string** is 
 
 While developing it, I drew inspiration from [Underscore.string][1], Python's [string methods][2] and my own experience with strings.
 
-This is an early development version. I'd love to hear your feedback and suggestions. If you'd like to have a certain function added, please open a new issue or send a pull request ;)
+This is an early development version. I'd love to hear your feedback and suggestions. If you'd like to have a certain operation added, please open a new issue or send a pull request ;)
 
   [1]: https://github.com/epeli/underscore.string
   [2]: http://docs.python.org/library/stdtypes.html#string-methods
@@ -47,9 +47,9 @@ It's important to note, that **objc.string** does not replace the standard metho
 
 **objc.string** has two basic principles at its core:
 
-* All functions adhere to functional style: they return a new object, leaving the original string untouched.
+* All methods adhere to functional style: they return a new object, leaving the original string untouched.
 
-* At the same time, most of the functions can be chained to efficiently perform multiple string operations in one sequence avoiding unnecessary memory allocations.
+* At the same time, most of the methods can be chained to efficiently perform multiple string operations in one sequence avoiding unnecessary memory allocations.
 
 Consider the following example:
 
@@ -65,7 +65,7 @@ newStr = [newStr append:@"."];                    // => @"Apple, orange, donut."
 
 This code produces four intermediate strings that get thrown away. Of course, there is `NSMutableString`, but Apple decided it does not need that many methods at all, so we Cocoa developers are pretty much screwed when it comes to manipulating strings in an efficient manner. The CoreFoundation counterparts of `NSString` and `NSMutableString` (with `CFString...` functions) provide a richer set of functionality than what is available in Foundation.
 
-**objc.string** bridges the two together by providing a uniform API and hiding all of the underlying implementation details. It _does not_ provide two sets of similar functions to support `NSString` and `NSMutableString`. Instead, it provides the ability to use the same functions that manipulate both, either purely (returning a new string) or in a more optimized way (sometimes modifying the string "in place"). This is achieved by using the `chain`/`unchain` methods:
+**objc.string** bridges the two together by providing a uniform API and hiding all of the underlying implementation details. It _does not_ provide two sets of similar methods to support `NSString` and `NSMutableString`. Instead, it provides the ability to use the same methods that manipulate both, either purely (returning a new string) or in a more optimized way (sometimes modifying the string "in place"). This is achieved by using the `chain`/`unchain` methods:
 
 ```objc
 NSString *testStr = @"\tapple orange plum \n";
@@ -79,7 +79,7 @@ newStr = [newStr append:@"."];                    // => @"Apple, orange, donut."
 newStr = [newStr unchain];           // <--
 ```
 
-Two new lines have been added, they are marked with `<--` in the code. A new string is allocated when the `chain` method is called. Successive method calls now know that `newStr` can be changed "in place" if needed (it's not always the case though), without allocating new strings. Note that the code has been formatted on multiple lines only for clarity. All of the following examples produce the same result in the end:
+Two new lines have been added, they are marked with `<--` in the code. A new string is allocated when the `chain` method is called. Subsequent method calls now know that `newStr` can be changed "in place" if needed (it's not always the case though), without allocating new strings. Note that the code has been formatted on multiple lines only for clarity. All of the following examples produce the same result in the end:
 
 ```objc
 NSString *testStr = @"\tapple orange plum \n";
@@ -113,9 +113,9 @@ NSMutableString *maybeNewStr = [mstr chain_fast:^(NSMutableString *str) {
 
 A few things to remember:
 
-* While modifying a string "in place" is often more efficient than creating a new one, it is not always the case. As a consequence, you should never assume that &lt;input string&gt; == &lt;return value&gt;. Failing to do so might cause unexpected results. A scrupulous reader may have noticed that the return value of `[anotherStr unchain]` in the code above is discarded. The `unchain` method is the only exception to this rule, i.e. it is guaranteed to return a pointer to the same string it receives as input.
+* While modifying a string "in place" is often more efficient than creating a new one, it is not always the case. As a consequence, you should never assume that &lt;input string&gt; == &lt;return value&gt;; use the return value in subsequent methods. Failing to do so might cause unexpected results. A scrupulous reader may have noticed that the return value of `[anotherStr unchain]` in the code above is discarded. The `unchain` method is the only exception to this rule, i.e. it is guaranteed to return a pointer to the same string it receives as input.
 
-* The `chain` method returns an autoreleased string which should not be explicitly retained or released until it is unchained. If one of the functions decides to discard the input string and return a new one, it would cause a memory leak in the case when the input string has been retained by the caller. In other words, please don't let a chained string escape the scope it was defined in. This means that for each call to `chain` (or `chain_fast`) there should be a corresponding call to `unchain` in the same function scope. When using `chain:` and `chain_fast:` with a block argument, this invariant is kept for you automatically, so you don't need to call `unchain` yourself.
+* The `chain` method returns an autoreleased string which should not be explicitly retained or released until it is unchained. If one of the methods decides to discard the input string and return a new one, it would cause a memory leak in the case when the input string has been retained by the caller. In other words, please don't let a chained string escape the scope it was defined in. This means that for each call to `chain` (or `chain_fast`) there should be a corresponding call to `unchain` in the same method/function scope. When using `chain:` and `chain_fast:` with a block argument, this invariant is kept for you automatically, so you don't need to call `unchain` yourself.
 
 ## Documentation ##
 
