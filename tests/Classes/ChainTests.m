@@ -35,6 +35,12 @@
     GHAssertEquals(_chainedStr, [[_chainedStr capitalize] unchain], @"");
 }
 
+- (void)testCenter
+{
+    GHAssertEquals(_chainedStr, [_chainedStr center:20], @"");
+    GHAssertEquals(_chainedStr, [[_chainedStr center:20] unchain], @"");
+}
+
 - (void)testCompress
 {
     GHAssertEquals(_chainedStr, [_chainedStr compress], @"");
@@ -87,6 +93,18 @@
 {
     GHAssertEquals(_chainedStr, [_chainedStr insert:@"abc" at:0], @"");
     GHAssertEquals(_chainedStr, [[_chainedStr insert:@"bca" at:3] unchain], @"");
+}
+
+- (void)testLjust
+{
+    GHAssertEquals(_chainedStr, [_chainedStr ljust:20], @"");
+    GHAssertEquals(_chainedStr, [[_chainedStr ljust:20] unchain], @"");
+}
+
+- (void)testRjust
+{
+    GHAssertEquals(_chainedStr, [_chainedStr rjust:20], @"");
+    GHAssertEquals(_chainedStr, [[_chainedStr rjust:20] unchain], @"");
 }
 
 - (void)testLowercase

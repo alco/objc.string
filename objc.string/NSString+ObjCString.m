@@ -10,6 +10,12 @@
 - (NSString *)capitalize {
     return str_capitalize(self);
 }
+- (NSString *)center:(NSUInteger)width {
+    return str_center(self, width, @" ");
+}
+- (NSString *)center:(NSUInteger)width with:(NSString *)character {
+    return str_center(self, width, character);
+}
 - (NSString *)compress {
     return str_compress(self);
 }
@@ -39,6 +45,18 @@
 }
 - (NSString *)insert:(NSString *)str at:(NSUInteger)position {
     return str_insert(self, str, position);
+}
+- (NSString *)ljust:(NSUInteger)width {
+    return str_ljust(self, width, @" ");
+}
+- (NSString *)ljust:(NSUInteger)width with:(NSString *)character {
+    return str_ljust(self, width, character);
+}
+- (NSString *)rjust:(NSUInteger)width {
+    return str_rjust(self, width, @" ");
+}
+- (NSString *)rjust:(NSUInteger)width with:(NSString *)character {
+    return str_rjust(self, width, character);
 }
 - (NSString *)lowercase {
     return str_lowercase(self);

@@ -20,6 +20,8 @@ typedef enum {
 
 - (NSString *)append:(NSString *)str;
 - (NSString *)capitalize;
+- (NSString *)center:(NSUInteger)width;
+- (NSString *)center:(NSUInteger)width with:(NSString *)character;
 - (NSString *)compress;
 - (NSString *)cut:(NSRange)range;
 - (NSString *)cutFrom:(NSUInteger)position;
@@ -30,10 +32,11 @@ typedef enum {
 - (NSString *)filter:(NSString *)str;
 - (NSString *)filterChars:(NSCharacterSet *)chars;
 - (NSString *)insert:(NSString *)str at:(NSUInteger)position;
+- (NSString *)ljust:(NSUInteger)width;
+- (NSString *)ljust:(NSUInteger)width with:(NSString *)character;
+- (NSString *)rjust:(NSUInteger)width;
+- (NSString *)rjust:(NSUInteger)width with:(NSString *)character;
 - (NSString *)lowercase;
-- (NSString *)pad:(NSUInteger)length;
-- (NSString *)pad:(NSUInteger)length with:(NSString *)str;
-- (NSString *)pad:(NSUInteger)length with:(NSString *)str flags:(int)flags;
 - (NSString *)repeat:(NSUInteger)count;
 - (NSString *)repeat:(NSUInteger)count sep:(NSString *)separator;
 - (NSString *)replace:(NSString *)substr with:(NSString *)repl;

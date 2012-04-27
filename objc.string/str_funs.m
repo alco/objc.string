@@ -35,6 +35,11 @@ NSString *str_capitalize(NSString *s)
     return str;
 }
 
+NSString *str_center(NSString *s, NSUInteger width, NSString *ch)
+{
+    return str_fill(s, width, ch, 1);
+}
+
 NSString *str_compress(NSString *s)
 {
     return str_replace(s, $regex(@"\\s+"), @" ");
@@ -82,6 +87,54 @@ NSString *str_expand_tabs(NSString *s, NSUInteger tabsize)
     return str_replace(s, @"\t", tab_str);
 }
 
+NSString *str_fill(NSString *s, NSUInteger width, NSString *ch, int flag)
+{
+    NSUInteger len = [s length];
+    if (len >= width || [ch length] == 0)
+        return s;
+
+    NSMutableString *str;
+    if (IS_CHAINING(s)) {
+        str = (NSMutableString *)s;
+    } else {
+        str = [NSMutableString stringWithString:s];
+    }
+
+    NSUInteger position = 0;
+
+    switch (flag) {
+    case 0:    // left
+        position = len;
+        // fall-through
+    case 2: {  // right
+        NSString *filling = str_repeat(ch, width - len, @"");
+        [str insertString:filling atIndex:position];
+    } break;
+
+    case 1: {  // middle
+        NSUInteger filling_width = width - len;
+        if ((filling_width & 1) == 0) {  // filling_width is even
+            NSUInteger half_width = filling_width / 2;
+            NSString *filling = str_repeat(ch, half_width, @"");
+            [str insertString:filling atIndex:0];
+            [str appendString:filling];
+        } else {
+            NSUInteger right_len = filling_width / 2;
+            NSUInteger left_len = right_len + 1;
+            NSString *filling = str_repeat(ch, left_len, @"");
+            [str insertString:filling atIndex:0];
+            [str appendString:filling];
+            [str deleteCharactersInRange:NSMakeRange([str length] - 1, 1)];
+        }
+    } break;
+
+    default:
+        break;
+    }
+
+    return str;
+}
+
 NSString *str_filter(NSString *s, NSString *charstr)
 {
     return str_filter_chars(s, [NSCharacterSet characterSetWithCharactersInString:charstr]);
@@ -116,6 +169,16 @@ NSString *str_filter_chars(NSString *s, NSCharacterSet *chars)
 NSString *str_insert(NSString *s, NSString *newstr, NSUInteger position)
 {
     return str_splice(s, NSMakeRange(position, 0), newstr);
+}
+
+NSString *str_ljust(NSString *s, NSUInteger width, NSString *ch)
+{
+    return str_fill(s, width, ch, 0);
+}
+
+NSString *str_rjust(NSString *s, NSUInteger width, NSString *ch)
+{
+    return str_fill(s, width, ch, 2);
 }
 
 NSString *str_lowercase(NSString *s)

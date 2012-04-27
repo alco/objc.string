@@ -32,6 +32,14 @@
     GHAssertEqualStrings(@"Здравствуй, дед", [@"здравствуй, дед" capitalize], @"");
 }
 
+- (void)testCenter
+{
+    GHAssertEqualStrings(@"   hello  ", [@"hello" center:10], @"");
+    GHAssertEqualStrings(@"---hello---", [@"hello" center:11 with:@"-"], @"");
+    GHAssertEqualStrings(@"hello", [@"hello" center:5 with:@"-"], @"");
+    GHAssertEqualStrings(@"hello", [@"hello" center:10 with:@""], @"");
+}
+
 - (void)testCompress
 {
     // This line contains two Japanese spaces after the dot
@@ -88,6 +96,22 @@
     GHAssertEqualStrings(@"foo", [@"foo" insert:@"" at:0], @"");
     GHAssertThrows([@"foo" insert:@"" at:-1], @"");
     GHAssertThrows([@"foo" insert:@"" at:4], @"");
+}
+
+- (void)testLjust
+{
+    GHAssertEqualStrings(@"hello     ", [@"hello" ljust:10], @"");
+    GHAssertEqualStrings(@"hello-----", [@"hello" ljust:10 with:@"-"], @"");
+    GHAssertEqualStrings(@"hello", [@"hello" ljust:5 with:@"-"], @"");
+    GHAssertEqualStrings(@"hello", [@"hello" ljust:10 with:@""], @"");
+}
+
+- (void)testRjust
+{
+    GHAssertEqualStrings(@"     hello", [@"hello" rjust:10], @"");
+    GHAssertEqualStrings(@"-----hello", [@"hello" rjust:10 with:@"-"], @"");
+    GHAssertEqualStrings(@"hello", [@"hello" rjust:5 with:@"-"], @"");
+    GHAssertEqualStrings(@"hello", [@"hello" rjust:10 with:@""], @"");
 }
 
 - (void)testLowercase

@@ -37,6 +37,14 @@ NSString *str_append(NSString *s1, NSString *s2);
 NSString *str_capitalize(NSString *str);
 
 /*
+ * Center `str` in a string of length `width`. Use `ch` as a filling character.
+ * (chainable)
+ *
+ *     str_center(@"hello", 10, @" ")  =>  @"   hello  "
+ */
+NSString *str_center(NSString *str, NSUInteger width, NSString *ch);
+
+/*
  * Compress adjacent whitespace into one space.
  * (chainable)
  *
@@ -89,6 +97,19 @@ NSString *str_delete(NSString *str, NSRange range);
 NSString *str_expand_tabs(NSString *str, NSUInteger tabsize);
 
 /*
+ * The base function for ljust, rjust, and center. `flag` can be one of
+ *
+ *   0 -- left-justify
+ *   1 -- center
+ *   2 -- right-justify
+ *
+ * (chainable)
+ *
+ *     str_fill(@"hello", 11, @"*", 1)  =>  @"***hello***"
+ */
+NSString *str_fill(NSString *str, NSUInteger width, NSString *ch, int flag);
+
+/*
  * Remove the characters in `charstr` from `str`.
  * (chainable)
  *
@@ -113,6 +134,22 @@ NSString *str_filter_chars(NSString *str, NSCharacterSet *chars);
  *     => @"fobaro"
  */
 NSString *str_insert(NSString *str, NSString *newstr, NSUInteger position);
+
+/*
+ * Left-justify `str` in a string of length `width` using `ch` as a filling character.
+ * (chainable)
+ *
+ *     str_ljust(@"hello", 10, @"-")  =>  @"hello-----"
+ */
+NSString *str_ljust(NSString *str, NSUInteger width, NSString *ch);
+
+/*
+ * Right-justify `str` in a string of length `width` using `ch` as a filling character.
+ * (chainable)
+ *
+ *     str_ljust(@"hello", 10, @"-")  =>  @"-----hello"
+ */
+NSString *str_rjust(NSString *str, NSUInteger width, NSString *ch);
 
 /*
  * Convert the string to lower case.
