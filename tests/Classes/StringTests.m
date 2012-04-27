@@ -215,6 +215,13 @@
     GHAssertEqualObjects(ARRAY(@"hello"), [@"hello" chop:0], @"");
 }
 
+- (void)testPartition
+{
+    GHAssertEqualObjects(ARRAY(@"a", @",", @"b", @",", @"", @",", @"c", @",", @"d"), [@"a,b,,c,d" partition:@","], @"");
+    GHAssertEqualObjects(ARRAY(@"a", @",", @"b", @",", @"c,d"), [@"a,b,c,d" partition:@"," times:2], @"");
+    GHAssertEqualObjects(ARRAY(@"a,b,c,d"), [@"a,b,c,d" partition:@"," times:0], @"");
+}
+
 - (void)testSplit
 {
     GHAssertEqualObjects(ARRAY(@"a", @"b", @"c", @"d"), [@"a b\nc\t  d" split], @"");

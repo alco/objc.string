@@ -399,6 +399,12 @@ NSArray *str_chop(NSString *s, NSUInteger count)
     return array;
 }
 
+NSArray *str_partition(NSString *s, NSString *sep, NSUInteger count)
+{
+    if (count == 0)
+        return [NSArray arrayWithObject:s];
+}
+
 NSArray *str_split_space(NSString *s)
 {
     NSRegularExpression *regex = (NSRegularExpression *)$regex(@"\\s+");

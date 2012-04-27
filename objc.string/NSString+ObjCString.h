@@ -94,6 +94,8 @@
 - (NSString *)join:(NSArray *)components;
 - (NSArray *)chop;  // -chop:1
 - (NSArray *)chop:(NSUInteger)count;
+- (NSArray *)partition:(NSString *)separator;
+- (NSArray *)partition:(NSString *)separator times:(NSUInteger)times;
 - (NSArray *)split;
 - (NSArray *)splitLines;
 - (NSArray *)split:(NSString *)separator;

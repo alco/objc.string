@@ -297,6 +297,15 @@ NSString *str_join(NSString *sep, NSArray *components);
 NSArray *str_chop(NSString *str, NSUInteger count);
 
 /*
+ * Partition the string at each occurrence of `sep`. `sep` will be included in
+ * the output array. Perform at most `count` splits.
+ *
+ *     str_partition(@"a,b,c", @",", 0)             =>  array(@"a,b,c")
+ *     str_partition(@"a,b,c", @",", NSIntegerMax)  =>  array(@"a", @",", @"b", @",", @"c")
+ */
+NSArray *str_partition(NSString *str, NSString *sep, NSUInteger count);
+
+/*
  * Split the string at whitespace.
  *
  *     str_split_space(@"a \t b\nc   d\r")  =>  array(@"a", @"b", @"c", @"d", @""))

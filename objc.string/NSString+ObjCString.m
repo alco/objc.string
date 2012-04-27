@@ -124,6 +124,12 @@
 - (NSArray *)chop:(NSUInteger)count {
     return str_chop(self, count);
 }
+- (NSArray *)partition:(NSString *)separator {
+    return str_partition(self, separator, NSIntegerMax);
+}
+- (NSArray *)partition:(NSString *)separator times:(NSUInteger)times {
+    return str_partition(self, separator, times);
+}
 - (NSArray *)split {
     return str_split_space(self);
 }
