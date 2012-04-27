@@ -209,9 +209,11 @@ NSString *str_repeat(NSString *s, NSUInteger count, NSString *sep)
         return str;
     }
 
+    BOOL use_sep = ([sep length] > 0);
     for (NSUInteger i = 0; i < count - 1; ++i) {
         [str appendString:s];
-        [str appendString:sep];
+        if (use_sep)
+            [str appendString:sep];
     }
     [str appendString:s];
 
