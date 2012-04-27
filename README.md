@@ -49,7 +49,7 @@ It's important to note, that **objc.string** does not replace the standard metho
 
 * All functions adhere to functional style: they return a new object, leaving the original string untouched.
 
-* Most of the functions can be chained to efficiently perform multiple string operations in one sequence avoiding unnecessary memory allocations.
+* At the same time, most of the functions can be chained to efficiently perform multiple string operations in one sequence avoiding unnecessary memory allocations.
 
 Consider the following example:
 
@@ -70,31 +70,31 @@ This code produces four intermediate strings that get thrown away. Of course, th
 ```objc
 NSString *testStr = @"\tapple orange plum \n";
 
-NSString *newStr = [testStr chain];
+NSString *newStr = [testStr chain];  // <--
 newStr = [newStr trim];                           // => @"apple orange plum"
 newStr = [newStr replace:@"plum" with:@"donut"];  // => @"apple orange donut"
 newStr = [newStr capitalize];                     // => @"Apple orange donut"
 newStr = [newStr replace:@" " with:@", "];        // => @"Apple, orange, donut"
 newStr = [newStr append:@"."];                    // => @"Apple, orange, donut."
-newStr = [newStr unchain];
+newStr = [newStr unchain];           // <--
 ```
 
-A new string is allocated when the `chain` method is called. Successive method calls now know that `newStr` can be changed "in place" if needed (it's not always the case though), without allocating new strings. Note that the code has been formatted on multiple lines only for clarity. All of the following examples produce the same result in the end:
+Two new lines have been added, they are marked with `<--` in the code. A new string is allocated when the `chain` method is called. Successive method calls now know that `newStr` can be changed "in place" if needed (it's not always the case though), without allocating new strings. Note that the code has been formatted on multiple lines only for clarity. All of the following examples produce the same result in the end:
 
 ```objc
 NSString *testStr = @"\tapple orange plum \n";
 
 // This is an inefficient way of combining multiple string operations, resulting
-// in allocation of four intermediate strings (5 allocations total)
+// in allocation of four intermediate strings (at the minimum)
 NSString *aStr =
     [[[[[testStr trim] replace:@"plum" with:@"donut"] capitalize] replace:@" " with:@", "] append:@"."];
 
 // This is more efficient.
-NSString *anotherStr = [testStr chain];
+NSString *anotherStr = [testStr chain];  // <--
 anotherStr = [[[testStr trim] replace:@"plum" with:@"donut"] capitalize];
 anotherStr = [anotherStr replace:@" " with:@", "];
 anotherStr = [anotherStr append:@"."];
-[anotherStr unchain];
+[anotherStr unchain];                    // <--
 
 // Same as the previous one, but automatically calls `unchain` behind the scenes.
 // This is the recommended way to combine multiple string operations.
@@ -102,20 +102,20 @@ NSString *yetAnotherStr = [testStr chain:^(NSString *str) {
     [[[[[str trim] replace:@"plum" with:@"donut"] capitalize] replace:@" " with:@", "] append:@"."];
 }];
 
-// If you already have an instance of NSMutableString, you can avoid the initial allocation altogether.
+// If you already have an instance of NSMutableString, you can avoid the initial copying altogether.
 // Note that in this case mstr should be autoreleased prior to being passed to the chain_fast method.
 // Read the explanation below for more details.
 NSMutableString *mstr = ...;
-[mstr chain_fast:^(NSMutableString *str) {
+NSMutableString *maybeNewStr = [mstr chain_fast:^(NSMutableString *str) {
     ...
 }];
 ```
 
 A few things to remember:
 
-* While modifying a string "in place" is often more efficient than creating a new one, it is not always the case. As a consequence, you should never discard the return value of any of the functions in the present library. Failing to do so might cause unexpected results. A scrupulous reader may have noticed that the return value of `[anotherStr unchain]` in the code above is discarded. The `unchain` method is the only exception to this rule, i.e. it is guaranteed to return a pointer to the same string it receives as input.
+* While modifying a string "in place" is often more efficient than creating a new one, it is not always the case. As a consequence, you should never assume that &lt;input string&gt; == &lt;return value&gt;. Failing to do so might cause unexpected results. A scrupulous reader may have noticed that the return value of `[anotherStr unchain]` in the code above is discarded. The `unchain` method is the only exception to this rule, i.e. it is guaranteed to return a pointer to the same string it receives as input.
 
-* The `chain` method returns an autoreleased string which should not be explicitly retained or released until it is `unchain`ed. If one of the functions decides to discard the input string and return a new one, it would cause a memory leak in the case when the input string has been retained by the caller. In other words, please don't let a chained string escape the scope it was defined in. This means that for each call to `chain` (or `chain_fast`) there should be a corresponding call to `unchain` in the same function scope. When using `chain:` and `chain_fast:` with a block argument, this invariant is kept for you automatically, so you don't need to call `unchain` yourself.
+* The `chain` method returns an autoreleased string which should not be explicitly retained or released until it is unchained. If one of the functions decides to discard the input string and return a new one, it would cause a memory leak in the case when the input string has been retained by the caller. In other words, please don't let a chained string escape the scope it was defined in. This means that for each call to `chain` (or `chain_fast`) there should be a corresponding call to `unchain` in the same function scope. When using `chain:` and `chain_fast:` with a block argument, this invariant is kept for you automatically, so you don't need to call `unchain` yourself.
 
 ## Documentation ##
 
